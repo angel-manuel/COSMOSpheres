@@ -6,11 +6,11 @@ COSMOSpheres
 Antes de empezar
 ================
 
-	+ Aprenda C
-	http://www.tecnun.es/asignaturas/Informat1/AyudaInf/aprendainf/ansic/leng_c.pdf
++ Aprenda C
+http://www.tecnun.es/asignaturas/Informat1/AyudaInf/aprendainf/ansic/leng_c.pdf
 
-	+ Tutoriales de ZeroRobotics
-	https://www.zerorobotics.org/web/zero-robotics/tutorials
++ Tutoriales de ZeroRobotics
+https://www.zerorobotics.org/web/zero-robotics/tutorials
 
 Github
 ======
