@@ -1,5 +1,5 @@
-void phase_1_init() {
+void phase1_init() {
 }
 
-void phase_1_loop() {
+void phase1_loop() {
 }
