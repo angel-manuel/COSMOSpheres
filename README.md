@@ -1,7 +1,19 @@
 COSMOSpheres
 ============
 
-<b>Bienvenido al projecto</b>. He creado este repositorio en Github porque creo que nos ayudara a organizarnos mejor.
+<b>Bienvenido al projecto</b>.
+
+Antes de empezar
+================
+
+	+ Aprenda C
+	http://www.tecnun.es/asignaturas/Informat1/AyudaInf/aprendainf/ansic/leng_c.pdf
+
+	+ Tutoriales de ZeroRobotics
+	https://www.zerorobotics.org/web/zero-robotics/tutorials
+
+Github
+======
 
 Yo soy Ángel y participe en el ZeroRobotics del año pasado con la EPM y
 seguro que me habéis visto por allí si vais los domingos y Compumáticas.
@@ -12,6 +24,7 @@ incluso se llego a caer una vez) y no facilita todo lo que podría el trabajo en
 Uno de los mayores problemas con Dropbox y ZR IDE es ese mismo,
 si no me creéis probad a trabajar a la vez en un mismo archivo y
 esperad a que salten los errores de conflicto. Por eso estas aquí, en Github, leyendo esto.
+He creado este repositorio en Github porque creo que nos ayudara a organizarnos mejor.
 
 Github es un web-red-plataforma-(ponga aqui su pamplina)
 que sirve entre otras cosas para trabajar colaborativamente en un projecto.
@@ -38,7 +51,7 @@ ellos puedes leerlo y arriba a la izquierda encontraras tres botones:
   + Blame: Parecido a History, te mostrara que parte del archivo fue introducido en cada versión y por tanto quien lo hizo.
 
 Editando, editando
-============
+==================
 
 Para permitir que varias personas puedan trabajar sin problemas en el
 mismo proyecto y hasta en el mismo archivo Github implementa un
@@ -60,7 +73,7 @@ Si intentan editar el archivo al mismo tiempo solo sobrevivirán los cambios del
 El resultado es que tienen que estar vigilantes el uno del otro para no estropear main.cpp
 
 Como las branch's hacen el mundo más feliz
-============
+==========================================
 
 Si Alicia y Berto hubiesen usado las branch's no hubiese habido problema.
 Alicia hubiese creado una branch llamada 'Recolectar suministros'
@@ -70,9 +83,9 @@ el trabajo sin molestar y en el peor de los casos, si hubiese dos versiones
 contradictorias preguntaría que versión se prefiere conservar(la una, la otra o una mezcla de ambas).
 
 Flujo de trabajo
-============
+================
 
-1.Decidiendo en que trabajar
+1. Decidiendo en que trabajar
 Si estas dispuesto a trabajar mira el issue-tracker(lista de problemas) al que puedes acceder pulsando la exclamación
 a la derecha de esta página y mira entre los problemas recientes. Elige a que te vas a dedicar,
 avisalo en los comentarios(cada problema tiene una sección de comentarios) y pasa al siguiente paso.
@@ -80,11 +93,18 @@ En caso de que no veas ningun problema, mira el trabajo que hay hecho y proponte
 despues ponlo como problema con un titulo descriptivo como 'Nuestro código aun no es capaz de evitar colisiones con
 el enemigo' y ponte a ello.
 
-2.Abre una nueva branch
+2. Abre una nueva branch
 Si el problema que te has propuesto resolver necesita editar el código necesitaras abrir una branch para evitar
 dolores de cabeza al resto: ve a la página del proyecto y busca el selector de branch(seguramente este seleccionada
 la branch master que es la principal), tendras un cuadro de texto para elegir el nombre de tu nueva branch, pon el numero
 que tenga tu problema en el issue-tracker y algo descriptivo.
-
 Quizas tu problema no requiera editar código, entonces no necesitas una branch.
 
+3. Cook the code
+Resuelve el problema. Tienes a tu disposición el editor de Github pero te recomiendo que copies el código a ZeroRobotics
+y lo trabajes y pruebes en ZR. Cuando quieras guardar para dejarlo para otro momento vuelve a Github a pulsa en 'Commit'.
+
+4. Añade tu branch al código común
+Cuando creas que has solucionado el problema ve a la página del proyecto y pulsa 'Compare & pull request', comprueba los
+cambios que has realizado, describe los cambios y mejoras que has introducido y pulsa 'Send pull request'. Tras eso Github
+se ocupara de resolver los conflictos y el código de la branch master incluira tus mejoras.
