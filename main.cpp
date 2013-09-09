@@ -2,6 +2,27 @@ int seconds;	//Segundos de juego pasados
 int phase;		//Fase de juego actual
 
 //update()
+bool blue_sphere;			//Indica si somos la SPHERE azul
+
+//Indices de los valores en ZRState y similares
+#define POS 0
+#define POS_X 0
+#define POS_Y 1
+#define POS_Z 2
+#define VEL 3
+#define VEL_X 3
+#define VEL_Y 4
+#define VEL_Z 5
+#define ATT 6
+#define ATT_X 6
+#define ATT_Y 7
+#define ATT_Z 8
+#define RATE 9
+//Los siguiente ya están definidos
+//#define RATE_X 9
+//#define RATE_Y 10
+//#define RATE_Z 11
+
 ZRState our_state;		//El estado de nuestra SPHERE
 ZRState their_state;	//El estado de su SPHERE
 
@@ -29,7 +50,7 @@ float item_position[NUMBER_OF_ITEMS_COORDINATES];	//Contiene las posiciones de l
 float our_comet_state[6];			//Estado de nuestro cometa ({pos}{vel})
 float their_comet_state[6];		//Estado de su cometa ({pos}{vel})
 
-int pellets_left;			//Número de disparos láser disponibles
+int laser_shots_left;			//Número de disparos láser disponibles
 //TODO: Estimar disparos restantes del otro satélite
 
 float our_homebase[3];		//Posición de nuestro hogar
@@ -52,9 +73,17 @@ short last_message;	//Contiene el último mensaje recibido de la otra SPHERE
 
 void init_update() {
 	int i;
+	loop_update();
 
-	//game.getHomeBase(OUR, our_homebase);
-	//game.getHomeBase(THEIR, their_homebase);
+	blue_sphere = our_state[POS_X] > 0.0f;
+
+	our_homebase[POS_X] = (blue_sphere) ? 0.64f: -0.64f;
+	our_homebase[POS_Y] = -0.8f;
+	our_homebase[POS_Z] = 0.0f;
+
+	their_homebase[POS_X] = (blue_sphere) ? -0.64f : 0.64f;
+	their_homebase[POS_Y] = -0.8f;
+	their_homebase[POS_Z] = 0.0f;
 
 	for(i = 0; i < NUMBER_OF_DEBRIS; ++i) {
 		game.getDebrisLocation(i, &(debris_position[i*3]));
@@ -63,8 +92,6 @@ void init_update() {
 	for(i = 0; i < NUMBER_OF_ITEMS; ++i) {
 		game.getItemLocation(i, &(item_position[i*3]));
 	}
-
-	loop_update();
 }
 
 void loop_update() {
@@ -92,7 +119,7 @@ void loop_update() {
 		game.getCometState(THEIR, their_comet_state);
 	}
 
-	//pellets_left = game.pelletsLeft();
+	laser_shots_left = game.laserShotsRemaining();
 
 	mass = game.getMass();
 
