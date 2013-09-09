@@ -92,6 +92,9 @@ void init_update() {
 	for(i = 0; i < NUMBER_OF_ITEMS; ++i) {
 		game.getItemLocation(i, &(item_position[i*3]));
 	}
+
+	debug_track(0, &fuel, (char*)"fuel");
+	debug_track(1, &mass, (char*)"mass");
 }
 
 void loop_update() {
@@ -137,13 +140,17 @@ void loop_update() {
 void init() {
   seconds = 0;
   phase = 1;
+  debug_init();
 	init_update();
+
   phase1_init();
   phase2_init();
 }
 
 void loop() {
 	loop_update();
+	debug_update();
+
   ++seconds;
   if(seconds < 90) {
   	phase = 1;
