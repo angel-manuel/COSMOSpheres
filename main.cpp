@@ -1,6 +1,9 @@
 int seconds;	//Segundos de juego pasados
 int phase;		//Fase de juego actual
 
+#define MAX_TORQUE 0.13f
+#define MAX_FORCE 0.26f
+
 #define MAX_NET_DIST 0.45f
 
 #define SPHERE_RADIUS 0.11f
@@ -164,7 +167,6 @@ void loop() {
 	loop_update();
 	debug_update();
 
-  ++seconds;
   if(seconds < 90) {
   	phase = 1;
     phase1_loop();
@@ -172,4 +174,6 @@ void loop() {
   	phase = 2;
     phase2_loop();
   }
+
+   ++seconds;
 }
