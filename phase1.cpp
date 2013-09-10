@@ -11,14 +11,14 @@ void phase1_loop() {
 
 	if(phase1_take(target_item)) {
 		if(phase1_take(target_item_2)) {
-			while(laser_shots_left > 0) {
-				DEBUG(("Bang!"));
-				game.shootLaser();
-				laser_shots_left--;
-			}
+			return;
 		}
 	}
+}
 
+//phase1_take
+//target_item -> Número de item a cojer
+//return -> true si el item ya ha sido recojido, false en todos los demas casos
 bool phase1_take(int target_item) {
 	int i;
 	float dist[3];
