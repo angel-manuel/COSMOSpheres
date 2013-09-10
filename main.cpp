@@ -1,6 +1,19 @@
 int seconds;	//Segundos de juego pasados
 int phase;		//Fase de juego actual
 
+#define MAX_NET_DIST 0.45f
+
+#define SPHERE_RADIUS 0.11f
+#define DEBRIS_RADIUS 0.03f
+
+#define MIN_LASSO_DIST 0.14f
+#define MAX_LASSO_DIST 0.20f
+
+#define MAX_ITEM_START_DIST 0.05f
+#define MAX_ITEM_START_VEL 0.01f
+#define MAX_ITEM_START_RATE 0.0401f
+#define MAX_ITEM_RATE 1.3962f
+
 //update()
 bool blue_sphere;			//Indica si somos la SPHERE azul
 
