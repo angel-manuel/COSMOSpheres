@@ -84,7 +84,7 @@ float their_score;	//Su puntuación actual (para debug)
 bool collision;		//Indica si estamos chocando con el otro SPHERES
 bool bounce;			//Indica si estamos chocando con el cometa o una escombrera
 
-short last_message;	//Contiene el último mensaje recibido de la otra SPHERE
+unsigned char last_message;	//Contiene el último mensaje recibido de la otra SPHERE
 //update()
 
 void init_update() {
@@ -105,9 +105,12 @@ void init_update() {
 		game.getDebrisLocation(i, &(debris_position[i*3]));
 	}
 
-	for(i = 0; i < NUMBER_OF_ITEMS; ++i) {
-		game.getItemLocation(i, &(item_position[i*3]));
-	}
+	item_position[0] = 0.50f;
+	item_position[1] = 0.65f;
+	item_position[2] = 0.0f;
+	item_position[3] = -0.50f;
+	item_position[4] = 0.65f;
+	item_position[5] = 0.0f;
 
 	debug_track(0, &fuel, (char*)"fuel");
 	debug_track(1, &mass, (char*)"mass");
