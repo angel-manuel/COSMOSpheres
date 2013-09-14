@@ -39,3 +39,5 @@
 
 #define OUR 0
 #define THEIR 1
+
+#define DIMENSION 2

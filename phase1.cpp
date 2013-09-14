@@ -6,6 +6,10 @@ void phase1_init() {
 }
 
 void phase1_loop() {
+	float *dst = &item_position[0];
+	phase1_moveto(dst);
+
+	/*
 	const int target_item = 0;
 	const int target_item_2 = 1;
 
@@ -14,6 +18,7 @@ void phase1_loop() {
 			return;
 		}
 	}
+	*/
 }
 
 //phase1_take
@@ -79,4 +84,49 @@ bool phase1_take(int target_item) {
 	}
 
 	return false;
+}
+
+void phase1_moveto(float *dst) {
+	float d_pos[DIMENSION];
+	float dist;
+	float ahead[DIMENSION];
+	float ahead_vel;
+	float ahead_vel_vector[DIMENSION];
+	float aside[DIMENSION];
+	float aside_vel;
+	float aside_vel_vector[DIMENSION];
+	float x, t, half_way, half_t, dt;
+	bool speed_up;
+	float force[3] = {0};
+	float ahead_force[DIMENSION];
+	float aside_force[DIMENSION];
+
+	mathVecSubtract(d_pos, dst, &our_state[POS], DIMENSION); 						//d_pos = dst - pos
+	dist = mathVecMagnitude(d_pos, DIMENSION);										//dist = |d_pos|
+	mathVecScalarDiv(ahead, d_pos, mathVecMagnitude(d_pos, DIMENSION), DIMENSION);	//ahead = d_pos/|d_pos|
+	ahead_vel = mathVecInner(ahead, &our_state[VEL], DIMENSION);					//ahead_vel = ahead X vel
+	mathVecScalarMult(ahead_vel_vector, ahead, ahead_vel, DIMENSION);				//ahead_vel_vector = ahead * ahead_vel
+
+	mathVecSubtract(aside_vel_vector, &our_state[VEL], ahead_vel_vector, DIMENSION);//aside_vel_vector = vel - ahead_vel_vector
+	mathVecScalarDiv(aside, ahead_vel_vector, mathVecMagnitude(aside_vel_vector, DIMENSION), DIMENSION);
+	aside_vel = mathVecMagnitude(aside_vel_vector, DIMENSION);
+
+	//x = (a*t^2)/2
+	//sqrt(2*x/a) = t
+	//v^2 = 2*a*x
+	//x = v^2/(2*a)
+
+	x = ahead_vel*ahead_vel/(2*MAX_FORCE);
+	t = sqrtf(2*x/MAX_FORCE);
+	half_way = (x + dist)/2;
+	half_t = sqrtf(2*half_way/MAX_FORCE);
+	dt = half_t*2 - t;
+
+	DEBUG(("t = %f\n half_t = %f\n", t, half_t));
+	speed_up = t < half_t;
+	mathVecScalarMult(ahead_force, ahead, (speed_up) ? MAX_FORCE : -MAX_FORCE, DIMENSION);
+	mathVecScalarMult(aside_force, aside, aside_vel*(-MAX_FORCE/dt), DIMENSION);
+	mathVecAdd(force, ahead_force, aside_force, DIMENSION);
+
+	api.setForces(force);
 }

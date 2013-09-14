@@ -19,7 +19,7 @@ bool is_item_collected[NUMBER_OF_ITEMS];	//Indica si alguien ha recogido cierto 
 bool is_item_ours[NUMBER_OF_ITEMS];				//Indica si nosotros hemos recogido cierto item
 bool is_item_theirs[NUMBER_OF_ITEMS];			//Indica si ellos han recogido cierto item
 
-float item_position[NUMBER_OF_ITEMS*3;	//Contiene las posiciones de los items
+float item_position[NUMBER_OF_ITEMS*3];	//Contiene las posiciones de los items
 
 float our_comet_state[6];			//Estado de nuestro cometa ({pos}{vel})
 float their_comet_state[6];		//Estado de su cometa ({pos}{vel})
