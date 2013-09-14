@@ -3,17 +3,16 @@ function [ d_state ] = control( t, state )
     v = state(2);
     f = 0;
     
-    max_f = 1;
+    max_f = 0.13;
     
-    target = 100;
+    target = 1.6;
     
     dist = target - x;
-    dx0 = v^2/(2*max_f);
-    dt0 = sqrt(2*dx0/max_f);
-    half_dx = dx0 + dist / 2;
-    half_dt = sqrt(2*half_dx/max_f);
     
-    if(dt0 < (half_dt - 0.1))
+    t_fren = v / max_f;
+    t_fren_dist = sqrt(2*dist/max_f);
+
+    if(t_fren < t_fren_dist)
         f = +max_f;
     else
         f = -max_f;
