@@ -5,6 +5,7 @@
 
 #define SPHERE_RADIUS 0.11f
 #define DEBRIS_RADIUS 0.03f
+#define COMET_RADIUS 0.07f
 
 #define MIN_LASSO_DIST 0.14f
 #define MAX_LASSO_DIST 0.20f
@@ -43,3 +44,4 @@
 #define DIMENSION 2
 
 #define MIN(a, b) ((a < b) ? a : b)
+#define MAX(a, b) ((a > b) ? a : b)
