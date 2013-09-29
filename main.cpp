@@ -70,6 +70,16 @@ void init_update() {
 	item_position[4] = 0.65f;
 	item_position[5] = 0.0f;
 
+	our_comet_state[POS_X] = (blue_sphere) ? 0.1f : -0.1f;
+	their_comet_state[POS_X] = (blue_sphere) ? -0.1f : 0.1f;
+	our_comet_state[POS_Y] = their_comet_state[POS_Y] = 0.8f;
+	our_comet_state[POS_Z] = their_comet_state[POS_Z] = 0.0f;
+
+	our_comet_state[VEL_X] = (blue_sphere) ? 0.095933593f : -0.095933593f;
+	their_comet_state[VEL_X] = (blue_sphere) ? -0.095933593f : 0.095933593f;
+	our_comet_state[VEL_Y] = their_comet_state[VEL_Y] = -0.284247684f;
+	our_comet_state[VEL_Z] = their_comet_state[VEL_Z] = 0.0f;
+
 	debug_track(0, &fuel, (char*)"fuel");
 	debug_track(1, &mass, (char*)"mass");
 }
