@@ -6,7 +6,7 @@ void phase2_loop() {
 }
 
 void phase2_shoot() {
-	
+
 }
 
 void phase2_attract() {
@@ -37,7 +37,7 @@ void phase2_attract() {
 	api.setVelocityTarget(tvel);
 }
 
-void phase2_predict(unsigned int dt, float initialState[6], float finalState[6]) {
+void phase2_predict(int dt, float initialState[6], float finalState[6]) {
 	int step;
 	float pos[3];
 	float vel[3];
