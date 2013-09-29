@@ -11,3 +11,11 @@ void mathVecScalarDiv(float *c, float *a, float b, int n) {
 		c[i] = a[i] / b;
 	}
 }
+
+void mathVecGetNormal(float *norm, float *v, int n) {
+	mathVecScalarDiv(norm, v, mathVecMagnitude(v, n), n);
+}
+
+float absf(float val) {
+	return (val > 0) ? val : -val;
+}

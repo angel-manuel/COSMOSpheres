@@ -1,5 +1,5 @@
-#define MAX_TORQUE 0.13f
-#define MAX_FORCE 0.26f
+#define MAX_TORQUE 0.01f
+#define MAX_FORCE 0.01f
 
 #define MAX_NET_DIST 0.45f
 
@@ -41,3 +41,5 @@
 #define THEIR 1
 
 #define DIMENSION 2
+
+#define MIN(a, b) ((a < b) ? a : b)

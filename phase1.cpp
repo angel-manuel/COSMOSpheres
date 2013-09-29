@@ -5,20 +5,30 @@ void phase1_init() {
 	phase1_taking = false;
 }
 
+float phase1_moveto_t_stop;
+float phase1_moveto_dist_stop;
+float phase1_moveto_dist;
 void phase1_loop() {
+	/*
+	phase1_moveto_t_stop = 0.0f;
+	phase1_moveto_dist_stop = 0.0f;
+	phase1_moveto_dist = 0.0f;
+	debug_track(4, &phase1_moveto_t_stop, (char*)"t_stop");
+	debug_track(5, &phase1_moveto_dist_stop, (char*)"dist_stop");
+	debug_track(6, &phase1_moveto_dist, (char*)"dist");
+
 	float *dst = &item_position[0];
 	phase1_moveto(dst);
+	*/
 
-	/*
+	
 	const int target_item = 0;
 	const int target_item_2 = 1;
 
 	if(phase1_take(target_item)) {
-		if(phase1_take(target_item_2)) {
-			return;
-		}
+		return;
 	}
-	*/
+	
 }
 
 //phase1_take
@@ -87,46 +97,59 @@ bool phase1_take(int target_item) {
 }
 
 void phase1_moveto(float *dst) {
-	float d_pos[DIMENSION];
-	float dist;
+	float *pos = &our_state[POS];
+	float *vel = &our_state[VEL];
+	float *att = &our_state[ATT];
+	float *rate = &our_state[RATE];
+	float forces[3] = {0.0f};
+
+	float dist[DIMENSION];
+	mathVecSubtract(dist, dst, pos, DIMENSION);
+
+	float d;
+	d = mathVecMagnitude(dist, DIMENSION);
+
 	float ahead[DIMENSION];
+	mathVecGetNormal(ahead, dist, DIMENSION);
+
 	float ahead_vel;
+	ahead_vel = mathVecInner(ahead, vel, DIMENSION);
+
 	float ahead_vel_vector[DIMENSION];
-	float aside[DIMENSION];
-	float aside_vel;
+	mathVecScalarMult(ahead_vel_vector, ahead, ahead_vel, DIMENSION);
+
 	float aside_vel_vector[DIMENSION];
-	float x, t, half_way, half_t, dt;
-	bool speed_up;
-	float force[3] = {0};
-	float ahead_force[DIMENSION];
-	float aside_force[DIMENSION];
+	mathVecSubtract(aside_vel_vector, vel, ahead_vel_vector, DIMENSION);
 
-	mathVecSubtract(d_pos, dst, &our_state[POS], DIMENSION); 						//d_pos = dst - pos
-	dist = mathVecMagnitude(d_pos, DIMENSION);										//dist = |d_pos|
-	mathVecScalarDiv(ahead, d_pos, mathVecMagnitude(d_pos, DIMENSION), DIMENSION);	//ahead = d_pos/|d_pos|
-	ahead_vel = mathVecInner(ahead, &our_state[VEL], DIMENSION);					//ahead_vel = ahead X vel
-	mathVecScalarMult(ahead_vel_vector, ahead, ahead_vel, DIMENSION);				//ahead_vel_vector = ahead * ahead_vel
-
-	mathVecSubtract(aside_vel_vector, &our_state[VEL], ahead_vel_vector, DIMENSION);//aside_vel_vector = vel - ahead_vel_vector
-	mathVecScalarDiv(aside, ahead_vel_vector, mathVecMagnitude(aside_vel_vector, DIMENSION), DIMENSION);
+	float aside_vel;
 	aside_vel = mathVecMagnitude(aside_vel_vector, DIMENSION);
 
-	//x = (a*t^2)/2
-	//sqrt(2*x/a) = t
-	//v^2 = 2*a*x
-	//x = v^2/(2*a)
+	float aside[DIMENSION];
+	mathVecGetNormal(aside, aside_vel_vector, DIMENSION);
 
-	x = ahead_vel*ahead_vel/(2*MAX_FORCE);
-	t = sqrtf(2*x/MAX_FORCE);
-	half_way = (x + dist)/2;
-	half_t = sqrtf(2*half_way/MAX_FORCE);
-	dt = half_t*2 - t;
+	float t_stop;
+	t_stop = absf(ahead_vel / MAX_FORCE);
+	phase1_moveto_t_stop = t_stop;
 
-	DEBUG(("t = %f\n half_t = %f\n", t, half_t));
-	speed_up = t < half_t;
-	mathVecScalarMult(ahead_force, ahead, (speed_up) ? MAX_FORCE : -MAX_FORCE, DIMENSION);
-	mathVecScalarMult(aside_force, aside, aside_vel*(-MAX_FORCE/dt), DIMENSION);
-	mathVecAdd(force, ahead_force, aside_force, DIMENSION);
+	float dist_stop;
+	dist_stop = (MAX_FORCE*t_stop*t_stop/2)*4;
+	phase1_moveto_dist_stop = dist_stop;
+	phase1_moveto_dist = d;
 
-	api.setForces(force);
+	bool slow_down;
+	slow_down = (dist_stop > d);
+
+	if(seconds > 45)
+		DEBUG(("%i:%s\n", seconds, slow_down ? "Frenando..." : "Acelerando..."));
+
+	float ahead_force[DIMENSION];
+	mathVecScalarMult(ahead_force, ahead, (slow_down) ? -MAX_FORCE : MAX_FORCE, DIMENSION);
+
+	float aside_force[DIMENSION];
+	mathVecScalarMult(aside_force, aside, -1, DIMENSION);
+
+	//mathVecAdd(forces, aside_force, ahead_force, DIMENSION);
+	mathVecAdd(forces, forces, ahead_force, DIMENSION);
+
+	api.setForces(forces);
 }

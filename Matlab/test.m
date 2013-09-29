@@ -4,4 +4,4 @@ X = STATE(:, 1);
 V = STATE(: ,2);
 
 plot(T, X, T, V);
-legend('dX', 'V');
+legend('X', 'V');

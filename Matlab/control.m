@@ -1,7 +1,6 @@
 function [ d_state ] = control( t, state )
     x = state(1);
     v = state(2);
-    f = 0;
     
     max_f = 0.13;
     
@@ -9,13 +8,17 @@ function [ d_state ] = control( t, state )
     
     dist = target - x;
     
-    t_fren = v / max_f;
-    t_fren_dist = sqrt(2*dist/max_f);
-
-    if(t_fren < t_fren_dist)
-        f = +max_f;
+    t_stop = abs(v / max_f);
+    dist_stop = (max_f*t_stop^2)/2;
+    
+    if(2*dist_stop > dist)
+        f = -max_f * min(1, t_stop);
     else
-        f = -max_f;
+        f = +max_f;
+    end
+    
+    if(v < 0) 
+        f = -f;
     end
 
     d_state = zeros(2, 1);
