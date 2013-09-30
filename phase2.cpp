@@ -47,15 +47,15 @@ void phase2_attract() {
 // 	mathVecCopy(&finalState[VEL], vel, 3);
 // }
 
-void phase2_comet_acceleration(float comet_pos[3], float sphere_pos[3], float acceleration[3]) {
-	float delta[3];
-	float d;
-	float a;
+// void phase2_comet_acceleration(float comet_pos[3], float sphere_pos[3], float acceleration[3]) {
+// 	float delta[3];
+// 	float d;
+// 	float a;
 
-	mathVecSubtract(delta, sphere_pos, comet_pos, 3);
-	d = mathVecMagnitude(delta, 3);
+// 	mathVecSubtract(delta, sphere_pos, comet_pos, 3);
+// 	d = mathVecMagnitude(delta, 3);
 
-	a = (1*mass)/(d*d);
+// 	a = (1*mass)/(d*d);
 
-	mathVecScalarMult(acceleration, delta, a/d, 3);
-}
+// 	mathVecScalarMult(acceleration, delta, a/d, 3);
+// }
