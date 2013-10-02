@@ -14,7 +14,10 @@ void phase2_attract() {
 	float t; //Tiempo que tardara en llegar a la altura de Y
 	float a[3];	//Aceleración que necesita el cometa
 	float d[3]; //Distancia a la que hay que estar del cometa
+	float d0[3]; //Distancia a la que estamos del cometa
 	int i;
+
+	mathVecSubtract(d0, &our_state[POS], &our_comet_state[POS], 3);
 
 	mathVecSubtract(delta, their_homebase, &our_comet_state[POS], 3); //delta = their_homebase - our_comet_pos
 	t = delta[POS_Y]/our_comet_state[VEL_Y];
