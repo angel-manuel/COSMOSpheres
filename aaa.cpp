@@ -41,7 +41,5 @@
 #define OUR 0
 #define THEIR 1
 
-#define DIMENSION 2
-
 #define MIN(a, b) ((a < b) ? a : b)
 #define MAX(a, b) ((a > b) ? a : b)
