@@ -1,5 +1,8 @@
-#define MAX_TORQUE 0.01f
-#define MAX_FORCE 0.01f
+#define SPHERE_MASS 4.16f
+
+#define SPHERE_ANGULAR_INERTIA 0.023f
+
+#define MAX_FORCE 0.1f
 
 #define MAX_NET_DIST 0.45f
 

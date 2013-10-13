@@ -29,6 +29,12 @@ void debug_update() {
 	api.setDebug(debug);
 }
 
+//debug_track(track, var, name)
+//Monitoriza una variable global
+//track -> Pista a usar (0-6)
+//var -> Puntero a la variable global
+//name -> Nombre de la variable
+//return -> true si se ha registrado el seguimiento correctamente y false en otro caso
 bool debug_track(int track, float* var, char* name) {
 	if(track >= 0 && track < DEBUG_TRACKS && var != NULL && debug_tracking_vars[track] == NULL) {
 		debug_tracking_vars[track] = var;

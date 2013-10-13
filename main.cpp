@@ -13,13 +13,13 @@ bool is_debris_collected[10];	//Indica si alguien ha recogido cierta escombrera
 bool is_debris_ours[10];			//Indica si nosotros hemos recogido cierta escombrera
 bool is_debris_theirs[10];		//Indica si ellos han recogido cierta escombrera
 
-float debris_position[NUMBER_OF_DEBRIS*3];	//Contiene las posiciones de las escombreras
+float debris_position[NUMBER_OF_DEBRIS][3];	//Contiene las posiciones de las escombreras
 
 bool is_item_collected[NUMBER_OF_ITEMS];	//Indica si alguien ha recogido cierto item
 bool is_item_ours[NUMBER_OF_ITEMS];				//Indica si nosotros hemos recogido cierto item
 bool is_item_theirs[NUMBER_OF_ITEMS];			//Indica si ellos han recogido cierto item
 
-float item_position[NUMBER_OF_ITEMS*3];	//Contiene las posiciones de los items
+float item_position[NUMBER_OF_ITEMS][3];	//Contiene las posiciones de los items
 
 float our_comet_state[6];			//Estado de nuestro cometa ({pos}{vel})
 float their_comet_state[6];		//Estado de su cometa ({pos}{vel})
@@ -51,34 +51,34 @@ void init_update() {
 
 	blue_sphere = our_state[POS_X] > 0.0f;
 
-	our_homebase[POS_X] = (blue_sphere) ? 0.64f: -0.64f;
+	our_homebase[POS_X] = (blue_sphere) ? 0.64f : -0.64f;
 	our_homebase[POS_Y] = -0.8f;
-	our_homebase[POS_Z] = 0.0f;
+	our_homebase[POS_Z] = (blue_sphere) ? 0.64f : -0.64f;
 
 	their_homebase[POS_X] = (blue_sphere) ? -0.64f : 0.64f;
 	their_homebase[POS_Y] = -0.8f;
-	their_homebase[POS_Z] = 0.0f;
+	their_homebase[POS_Z] = (blue_sphere) ? -0.64f : 0.64f;
 
 	for(i = 0; i < NUMBER_OF_DEBRIS; ++i) {
-		game.getDebrisLocation(i, &(debris_position[i*3]));
+		game.getDebrisLocation(i, debris_position[i]);
 	}
 
-	item_position[0] = 0.50f;
-	item_position[1] = 0.65f;
-	item_position[2] = 0.0f;
-	item_position[3] = -0.50f;
-	item_position[4] = 0.65f;
-	item_position[5] = 0.0f;
+	item_position[0][POS_X] = 0.50f;
+	item_position[0][POS_Y] = 0.65f;
+	item_position[0][POS_Z] = 0.0f;
+	item_position[1][POS_X] = -0.50f;
+	item_position[1][POS_Y] = 0.65f;
+	item_position[1][POS_Z] = 0.0f;
 
-	our_comet_state[POS_X] = (blue_sphere) ? 0.1f : -0.1f;
-	their_comet_state[POS_X] = (blue_sphere) ? -0.1f : 0.1f;
+	our_comet_state[POS_X] = their_comet_state[POS_X] = 0.0f;
 	our_comet_state[POS_Y] = their_comet_state[POS_Y] = 0.8f;
 	our_comet_state[POS_Z] = their_comet_state[POS_Z] = 0.0f;
 
-	our_comet_state[VEL_X] = (blue_sphere) ? 0.095933593f : -0.095933593f;
-	their_comet_state[VEL_X] = (blue_sphere) ? -0.095933593f : 0.095933593f;
-	our_comet_state[VEL_Y] = their_comet_state[VEL_Y] = -0.284247684f;
-	our_comet_state[VEL_Z] = their_comet_state[VEL_Z] = 0.0f;
+	our_comet_state[VEL_X] = (blue_sphere) ? 0.0568181818f : -0.0568181818f;
+	their_comet_state[VEL_X] = (blue_sphere) ? -0.0568181818f : 0.0568181818f;
+	our_comet_state[VEL_Y] = their_comet_state[VEL_Y] = -0.1420454545f;
+	our_comet_state[VEL_Z] = (blue_sphere) ? 0.0568181818f : -0.0568181818f;
+	their_comet_state[VEL_Z] = (blue_sphere) ? +0.0568181818f : 0.0568181818f;
 
 	debug_track(0, &fuel, (char*)"fuel");
 	debug_track(1, &mass, (char*)"mass");

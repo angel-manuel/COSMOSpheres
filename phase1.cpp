@@ -1,3 +1,4 @@
+//Se encarga de la fase primera
 bool phase1_taking;
 float phase1_initial_att[3];
 
