@@ -2,9 +2,8 @@
 //dst -> Destino
 //tvel -> Velocidad objetivo
 //return -> true si ya se ha llegado, false en todos los demas casos
-bool movement_moveto(float dst[3], float tvel[3]) {
+bool movement_moveto(float dst[3]) {
 	float delta[3];
-	float delta_vel[3];
 	float d;
 	float v;
 	float r;
@@ -12,8 +11,7 @@ bool movement_moveto(float dst[3], float tvel[3]) {
 
 	mathVecSubtract(delta, dst, &our_state[POS], 3);
 	d = mathVecMagnitude(delta, 3);
-	mathVecSubtract(delta_vel, tvel, &our_state[VEL], 3);
-	v = mathVecMagnitude(delta_vel, 3);
+	v = mathVecMagnitude(&our_state[VEL], 3);
 	r = mathVecMagnitude(&our_state[RATE], 3);
 
 	if(d < MAX_ITEM_START_DIST) {
@@ -21,7 +19,7 @@ bool movement_moveto(float dst[3], float tvel[3]) {
 			return true;
 		} else {
 			api.setPositionTarget(dst);
-			api.setVelocityTarget(tvel); //TODO: Mejorar para tvel != 0
+			api.setVelocityTarget(zero); //TODO: Mejorar para tvel != 0
 			api.setAttRateTarget(zero);
 			return false;
 		}
@@ -29,22 +27,8 @@ bool movement_moveto(float dst[3], float tvel[3]) {
 		//TODO: Sustituir setPositionTarget
 		//iss5: Maniobrar entre las nubes
 		api.setPositionTarget(dst);
-		api.setVelocityTarget(tvel);
+		api.setVelocityTarget(zero);
 		api.setAttRateTarget(zero);
 		return false;
 	}
-}
-
-//movement_timeto
-//dst -> Destino
-//tvel -> Velocidad objetivo
-//return -> Tiempo estimado de llegada
-float movement_timeto(float dst[3], float tvel[3]) {
-	float delta[3];
-	float delta_vel[3];
-
-	mathVecSubtract(delta, dst, &our_state[POS], 3);
-	mathVecSubtract(delta_vel, tvel, &our_state[VEL], 3);
-
-	return 0.0f;
 }
