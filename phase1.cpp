@@ -32,13 +32,13 @@ bool phase1_take(int target_item) {
 		return true;
 	}
 
-	if(movement_moveto(&(item_position[target_item*3])) || phase1_taking) {
+	if(movement_moveto(item_position[target_item]) || phase1_taking) {
 		if(!phase1_taking) {
 			phase1_taking = true;
 			mathVecCopy(phase1_initial_att, &our_state[ATT], 3);
 		}
 
-		api.setPositionTarget(&(item_position[target_item*3]));
+		api.setPositionTarget(item_position[target_item]);
 		api.setVelocityTarget(zero);
 
 		dot = mathVecInner(phase1_initial_att, &our_state[ATT], 3);
@@ -56,7 +56,7 @@ bool phase1_take(int target_item) {
 			att_rate[POS_Z] = 0.0f;
 		}
 
-		api.setPositionTarget(&(item_position[target_item*3]));
+		api.setPositionTarget(item_position[target_item]);
 		api.setVelocityTarget(zero);
 		api.setAttRateTarget(att_rate);
 	} else {
