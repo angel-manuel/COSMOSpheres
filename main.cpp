@@ -80,8 +80,10 @@ void init_update() {
 	our_comet_state[VEL_Z] = (blue_sphere) ? 0.0568181818f : -0.0568181818f;
 	their_comet_state[VEL_Z] = (blue_sphere) ? +0.0568181818f : 0.0568181818f;
 
+	#ifdef DEBUG_ACTIVE
 	debug_track(0, &fuel, (char*)"fuel");
 	debug_track(1, &mass, (char*)"mass");
+	#endif
 }
 
 void loop_update() {
@@ -127,8 +129,11 @@ void loop_update() {
 void init() {
   seconds = 0;
   phase = 1;
+
+  #ifdef DEBUG_ACTIVE
   debug_init();
-	init_update();
+  #endif
+  init_update();
 
   phase1_init();
   phase2_init();
@@ -136,7 +141,9 @@ void init() {
 
 void loop() {
 	loop_update();
+	#ifdef DEBUG_ACTIVE
 	debug_update();
+	#endif
 
   if(seconds < 90) {
   	phase = 1;

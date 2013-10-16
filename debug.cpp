@@ -1,5 +1,6 @@
 #define DEBUG_TRACKS 7 //Número de datos que se pueden seguir
 
+#ifdef DEBUG_ACTIVE
 char* debug_tracking_names[DEBUG_TRACKS];
 float* debug_tracking_vars[DEBUG_TRACKS];
 
@@ -56,3 +57,4 @@ bool debug_track(int track, float* var, char* name) {
 	}
 	return false;
 }
+#endif//DEBUG_ACTIVE
