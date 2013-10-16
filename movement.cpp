@@ -8,7 +8,7 @@ bool movement_moveto(float dst[3]) {
 
 	mathVecSubtract(delta, dst, &our_state[POS], 3);		//delta = dst - pos
 	
-	if(mathVecMagnitude(delta, 3) < MAX_ITEM_START_DIST && mathVecMagnitude(&our_state[VEL]) < MAX_ITEM_START_VEL) {
+	if(mathVecMagnitude(delta, 3) < MAX_ITEM_START_DIST && mathVecMagnitude(&our_state[VEL], 3) < MAX_ITEM_START_VEL) {
 		return true;
 	}
 
