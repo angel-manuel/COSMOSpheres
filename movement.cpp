@@ -47,12 +47,7 @@ bool movement_moveto(float dst[3]) {
 
 		api.setPositionTarget(next);
 	} else {
-		//TODO: Sustituir setPositionTarget
-		//iss5: Maniobrar entre las nubes
 		api.setPositionTarget(dst);
-		api.setVelocityTarget(tvel);
-		api.setAttRateTarget(zero);
-		return false;
 	}
 
 	return false;
