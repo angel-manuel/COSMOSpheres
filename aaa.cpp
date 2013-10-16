@@ -1,5 +1,3 @@
-#define SPHERE_MASS 4.16f
-
 #define SPHERE_ANGULAR_INERTIA 0.023f
 
 #define MAX_FORCE 0.1f

@@ -27,6 +27,12 @@ void debug_update() {
 	}
 
 	api.setDebug(debug);
+
+	for(i = 0; i <DEBUG_TRACKS; ++i) {
+		if(debug_tracking_vars[i] != NULL) {
+			DEBUG(("%i:%s = %f\n", i, (debug_tracking_names[i] != NULL) ? debug_tracking_names[i] : "?", *(debug_tracking_vars[i])));
+		}
+	}
 }
 
 //debug_track(track, var, name)
@@ -39,11 +45,13 @@ bool debug_track(int track, float* var, char* name) {
 	if(track >= 0 && track < DEBUG_TRACKS && var != NULL && debug_tracking_vars[track] == NULL) {
 		debug_tracking_vars[track] = var;
 		debug_tracking_names[track] = name;
+		/*
 		if(name != NULL) {
 			DEBUG(("Debug track %i = %s\n", track, name));
 		} else {
 			DEBUG(("Debug track %i ???\n", track));
 		}
+		*/
 		return true;
 	}
 	return false;
