@@ -52,17 +52,3 @@ bool movement_moveto(float dst[3]) {
 
 	return false;
 }
-
-//movement_timeto
-//dst -> Destino
-//tvel -> Velocidad objetivo
-//return -> Tiempo estimado de llegada
-float movement_timeto(float dst[3], float tvel[3]) {
-	float delta[3];
-	float delta_vel[3];
-
-	mathVecSubtract(delta, dst, &our_state[POS], 3);
-	mathVecSubtract(delta_vel, tvel, &our_state[VEL], 3);
-
-	return 0.0f;
-}
