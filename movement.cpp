@@ -19,7 +19,14 @@ void movement_init() {
 bool movement_moveto(float dst[3]) {
 	float delta[3];
 	float head[3];
-	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS + 0.04f);
+
+	float head_vel[3];
+	mathVecScalarMult(head_vel, head, mathVecInner(head, &our_state[VEL], 3), 3);
+	float head_speed = mathVecMagnitude(head_vel, 3);
+	float side_vel[3];
+	mathVecSubtract(side_vel, &our_state[VEL], head_vel, 3);
+
+	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS);
 	const float correction = danger_radius + 0.1f;
 
 	mathVecSubtract(delta, dst, &our_state[POS], 3);		//delta = dst - pos
@@ -35,10 +42,12 @@ bool movement_moveto(float dst[3]) {
 	int nearest_debris = -1;
 	float nearest_debris_distance = 1000000.0f;
 	float* nearest_debris_vector;
+	float desviation;
 	for(debris_number = 0; debris_number < NUMBER_OF_DEBRIS; debris_number++) {
 		if(!is_debris_collected[debris_number]) {
 			distanceToDebris(&our_state[POS], head, debris_position[debris_number], debris_vector);
-			if(debris_vector[4] - danger_radius < 0.0f) {
+			desviation = (mathVecInner(side_vel, debris_vector, 3)/head_speed)*debris_vector[3];
+			if(debris_vector[4] - (danger_radius + desviation) < 0.0f) {
 				//Colisión
 				//DEBUG(("%i:[%f, %f, %f] at %f:%f\n", debris_number, debris_position[debris_number][POS_X], debris_position[debris_number][POS_Y], debris_position[debris_number][POS_Z], debris_vector[4], debris_vector[3]));
 				if(debris_vector[3] < nearest_debris_distance && debris_vector[3] > 0.0f) {
@@ -56,6 +65,11 @@ bool movement_moveto(float dst[3]) {
 
 		mathVecScalarMult(tmp, nearest_debris_vector, correction, 3);
 		mathVecAdd(next, debris_position[nearest_debris], tmp, 3);
+
+		if(absf(next[POS_X]) > 0.64f || absf(next[POS_Y]) > 0.8f || absf(next[POS_Z]) > 0.64f) {
+			mathVecScalarMult(tmp, nearest_debris_vector, -correction, 3);
+			mathVecAdd(next, debris_position[nearest_debris], tmp, 3);
+		}
 
 		#ifdef DEBUG_ACTIVE
 		last_debris = (float)nearest_debris;
