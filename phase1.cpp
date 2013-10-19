@@ -7,11 +7,11 @@ void phase1_init() {
 }
 
 void phase1_loop() {
-	const int target_item = (blue_sphere) ? 0 : 1;
+	const int target_item = (blue_sphere) ? 1 : 0;
+	const int target_item2 = (blue_sphere) ? 0 : 1;
 
 	if(phase1_take(target_item)) {
-		float dst[3] = {our_comet_state[POS_X] + (blue_sphere) ? -0.18f : 0.18f, 0.7f, our_comet_state[POS_Z]};
-		api.setPositionTarget(dst);
+		phase1_take(target_item2);
 	}
 	
 }
