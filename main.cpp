@@ -6,7 +6,7 @@ bool blue_sphere;			//Indica si somos la SPHERE azul
 
 ZRState our_state;		//El estado de nuestra SPHERE
 
-bool is_debris_collected[10];	//Indica si alguien ha recogido cierta escombrera
+bool is_debris_collected[NUMBER_OF_DEBRIS];	//Indica si alguien ha recogido cierta escombrera
 
 float debris_position[NUMBER_OF_DEBRIS][3];	//Contiene las posiciones de las escombreras
 
