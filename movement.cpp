@@ -7,8 +7,8 @@ void movement_init() {
 	#ifdef DEBUG_ACTIVE
 	last_debris = -1.0f;
 	distance = 0.0f;
-	debug_track(5, &distance, (char*)"debris_distance");
-	debug_track(6, &last_debris, (char*)"last_debris");
+	debug_track(5, &distance, (char*)"movement:debris_distance");
+	debug_track(6, &last_debris, (char*)"movement:last_debris");
 	#endif
 }
 
@@ -74,17 +74,17 @@ bool movement_moveto(float dst[3]) {
 		#ifdef DEBUG_ACTIVE
 		last_debris = (float)nearest_debris;
 		distance = nearest_debris_distance;
+		DEBUG(("movement:debris %i = [%f, %f, %f] at %f\n", nearest_debris, debris_position[nearest_debris][POS_X], debris_position[nearest_debris][POS_Y], debris_position[nearest_debris][POS_Z], nearest_debris_distance));
+		DEBUG(("movement:next = [%f, %f, %f]\n", next[POS_X], next[POS_Y], next[POS_Z]));
 		#endif
 
-		DEBUG(("debris %i = [%f, %f, %f] at %f\n", nearest_debris, debris_position[nearest_debris][POS_X], debris_position[nearest_debris][POS_Y], debris_position[nearest_debris][POS_Z], nearest_debris_distance));
-		DEBUG(("next = [%f, %f, %f]\n", next[POS_X], next[POS_Y], next[POS_Z]));
 		api.setPositionTarget(next);
 	} else {
 		#ifdef DEBUG_ACTIVE
 		last_debris = -1.0f;
 		nearest_debris_distance = 0.0f;
+		DEBUG(("movement:Clear!\n"));
 		#endif
-		DEBUG(("Clear!\n"));
 		api.setPositionTarget(dst);
 	}
 

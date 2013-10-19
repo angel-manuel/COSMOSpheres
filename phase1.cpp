@@ -48,7 +48,9 @@ bool phase1_take(int target_item) {
 			if(angle > PI/2) {
 				att_rate[POS_Z] = 0.0f;
 				phase1_taking = false;
-				DEBUG(("Fail!"));
+				#ifdef DEBUG_ACTIVE
+				DEBUG(("phase1_take:Fail!"));
+				#endif
 			} else {
 				att_rate[POS_Z] = MAX_ITEM_RATE/2;
 			}
