@@ -83,7 +83,7 @@ bool movement_moveto(float dst[3]) {
 		#ifdef DEBUG_ACTIVE
 		last_debris = -1.0f;
 		nearest_debris_distance = 0.0f;
-		DEBUG(("movement:Clear!\n"));
+		//DEBUG(("movement:Clear!\n"));
 		#endif
 		api.setPositionTarget(dst);
 	}

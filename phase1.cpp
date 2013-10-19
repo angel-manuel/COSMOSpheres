@@ -11,9 +11,10 @@ void phase1_loop() {
 	const int target_item2 = (blue_sphere) ? 0 : 1;
 
 	if(phase1_take(target_item)) {
-		phase1_take(target_item2);
+		if(phase1_take(target_item2)) {
+			phase2_prepare();
+		}
 	}
-	
 }
 
 //phase1_take
