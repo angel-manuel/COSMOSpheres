@@ -28,7 +28,7 @@ void phase2_loop() {
 //phase2_prepare
 //Se coloca en posición para disparar al cometa por primera vez
 void phase2_prepare() {
-	float target_pos[3] = {(our_state[POS_X] > 0) ? 0.4f : -0.4f, 0.7f, (blue_sphere) ? 0.4f : -0.4f};
+	float target_pos[3] = {(blue_sphere) ? 0.4f : -0.4f, 0.7f, (blue_sphere) ? 0.4f : -0.4f};
 	mathVecNormalize(target_att, 3);
 
 	api.setPositionTarget(target_pos);
