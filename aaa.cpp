@@ -37,7 +37,7 @@
 //#define RATE_Y 10
 //#define RATE_Z 11
 
-#define NUMBER_OF_DEBRIS 10
+#define NUMBER_OF_DEBRIS 16
 
 #define NUMBER_OF_ITEMS 2
 

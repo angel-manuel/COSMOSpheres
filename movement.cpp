@@ -1,10 +1,13 @@
 #ifdef DEBUG_ACTIVE
 float last_debris;
+float distance;
 #endif
 
 void movement_init() {
 	#ifdef DEBUG_ACTIVE
 	last_debris = -1.0f;
+	distance = 0.0f;
+	debug_track(5, &distance, (char*)"debris_distance");
 	debug_track(6, &last_debris, (char*)"last_debris");
 	#endif
 }
@@ -16,7 +19,8 @@ void movement_init() {
 bool movement_moveto(float dst[3]) {
 	float delta[3];
 	float head[3];
-	const float correction = (SPHERE_RADIUS + DEBRIS_RADIUS + 0.1f);
+	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS + 0.04f);
+	const float correction = danger_radius + 0.1f;
 
 	mathVecSubtract(delta, dst, &our_state[POS], 3);		//delta = dst - pos
 	
@@ -34,7 +38,7 @@ bool movement_moveto(float dst[3]) {
 	for(debris_number = 0; debris_number < NUMBER_OF_DEBRIS; debris_number++) {
 		if(!is_debris_collected[debris_number]) {
 			distanceToDebris(&our_state[POS], head, debris_position[debris_number], debris_vector);
-			if(debris_vector[4] - correction < 0.0f) {
+			if(debris_vector[4] - danger_radius < 0.0f) {
 				//Colisión
 				//DEBUG(("%i:[%f, %f, %f] at %f:%f\n", debris_number, debris_position[debris_number][POS_X], debris_position[debris_number][POS_Y], debris_position[debris_number][POS_Z], debris_vector[4], debris_vector[3]));
 				if(debris_vector[3] < nearest_debris_distance && debris_vector[3] > 0.0f) {
@@ -55,6 +59,7 @@ bool movement_moveto(float dst[3]) {
 
 		#ifdef DEBUG_ACTIVE
 		last_debris = (float)nearest_debris;
+		distance = nearest_debris_distance;
 		#endif
 
 		DEBUG(("debris %i = [%f, %f, %f] at %f\n", nearest_debris, debris_position[nearest_debris][POS_X], debris_position[nearest_debris][POS_Y], debris_position[nearest_debris][POS_Z], nearest_debris_distance));
@@ -63,6 +68,7 @@ bool movement_moveto(float dst[3]) {
 	} else {
 		#ifdef DEBUG_ACTIVE
 		last_debris = -1.0f;
+		nearest_debris_distance = 0.0f;
 		#endif
 		DEBUG(("Clear!\n"));
 		api.setPositionTarget(dst);
