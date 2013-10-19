@@ -20,7 +20,7 @@ void distanceToDebris(float x0[3], float vd[3], float p[3], float ret[5]){
   ret[POS_Z] = nYZ[1] * dist_YZ;
 
   float tmp[3];
-  mathVecSubtract(tmp, p, ret, 3);
+  mathVecAdd(tmp, p, ret, 3);
   mathVecSubtract(tmp, tmp, x0, 3);
   ret[3] = mathVecMagnitude(tmp, 3);
 

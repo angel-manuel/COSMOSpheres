@@ -1,3 +1,14 @@
+#ifdef DEBUG_ACTIVE
+float last_debris;
+#endif
+
+void movement_init() {
+	#ifdef DEBUG_ACTIVE
+	last_debris = -1.0f;
+	debug_track(6, &last_debris, (char*)"last_debris");
+	#endif
+}
+
 //movement_moveto
 //dst -> Destino
 //tvel -> Velocidad objetivo
@@ -42,10 +53,17 @@ bool movement_moveto(float dst[3]) {
 		mathVecScalarMult(tmp, nearest_debris_vector, correction, 3);
 		mathVecAdd(next, debris_position[nearest_debris], tmp, 3);
 
+		#ifdef DEBUG_ACTIVE
+		last_debris = (float)nearest_debris;
+		#endif
+
 		DEBUG(("debris %i = [%f, %f, %f] at %f\n", nearest_debris, debris_position[nearest_debris][POS_X], debris_position[nearest_debris][POS_Y], debris_position[nearest_debris][POS_Z], nearest_debris_distance));
 		DEBUG(("next = [%f, %f, %f]\n", next[POS_X], next[POS_Y], next[POS_Z]));
 		api.setPositionTarget(next);
 	} else {
+		#ifdef DEBUG_ACTIVE
+		last_debris = -1.0f;
+		#endif
 		DEBUG(("Clear!\n"));
 		api.setPositionTarget(dst);
 	}

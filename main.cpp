@@ -39,8 +39,7 @@ void init_update() {
 	item_position[1][POS_Z] = 0.0f;
 
 	#ifdef DEBUG_ACTIVE
-	debug_track(0, &fuel, (char*)"fuel");
-	debug_track(1, &mass, (char*)"mass");
+	debug_track(0, &mass, (char*)"mass");
 	#endif
 }
 
@@ -75,6 +74,7 @@ void init() {
   #endif
   init_update();
 
+  movement_init();
   phase1_init();
   phase2_init();
 }
