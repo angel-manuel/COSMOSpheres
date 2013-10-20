@@ -36,7 +36,10 @@ bool phase1_take(int target_item) {
 		float angle;
 		if(!phase1_taking) {
 			phase1_taking = true;
-			mathVecCopy(phase1_initial_att, &our_state[ATT], 3);
+			int i;
+			for(i = 0; i < 3; ++i) {
+				phase1_initial_att[i] = our_state[ATT+i];
+			}
 		}
 
 		api.setPositionTarget(item_position[target_item]);

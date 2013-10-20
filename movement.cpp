@@ -72,8 +72,8 @@ bool movement_moveto(float dst[3]) {
 		}
 
 		#ifdef DEBUG_ACTIVE
-		last_debris = (float)nearest_debris;
-		distance = nearest_debris_distance;
+		movement_last_debris = (float)nearest_debris;
+		movement_distance = nearest_debris_distance;
 		DEBUG(("movement:debris %i = [%f, %f, %f] at %f\n", nearest_debris, debris_position[nearest_debris][POS_X], debris_position[nearest_debris][POS_Y], debris_position[nearest_debris][POS_Z], nearest_debris_distance));
 		DEBUG(("movement:next = [%f, %f, %f]\n", next[POS_X], next[POS_Y], next[POS_Z]));
 		#endif
