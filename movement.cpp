@@ -66,7 +66,7 @@ bool movement_moveto(float dst[3]) {
 		mathVecScalarMult(tmp, nearest_debris_vector, correction, 3);
 		mathVecAdd(next, debris_position[nearest_debris], tmp, 3);
 
-		if(absf(next[POS_X]) > 0.64f || absf(next[POS_Y]) > 0.8f || absf(next[POS_Z]) > 0.64f) {
+		if(ABS(next[POS_X]) > 0.64f || ABS(next[POS_Y]) > 0.8f || ABS(next[POS_Z]) > 0.64f) {
 			mathVecScalarMult(tmp, nearest_debris_vector, -correction, 3);
 			mathVecAdd(next, debris_position[nearest_debris], tmp, 3);
 		}
