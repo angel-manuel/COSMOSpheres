@@ -22,8 +22,6 @@ void phase1_loop() {
 //return -> true si el item ya ha sido recojido, false en todos los demas casos
 bool phase1_take(int target_item) {
 	float zero[3] = {0.0f};
-	float dot;
-	float angle;
 	float att_rate[3] = {0.0f};
 
 	if(is_item_collected[target_item]) {
@@ -34,6 +32,8 @@ bool phase1_take(int target_item) {
 	}
 
 	if(movement_moveto(item_position[target_item]) || phase1_taking) {
+		float dot;
+		float angle;
 		if(!phase1_taking) {
 			phase1_taking = true;
 			mathVecCopy(phase1_initial_att, &our_state[ATT], 3);
@@ -53,7 +53,11 @@ bool phase1_take(int target_item) {
 				DEBUG(("phase1_take:Fail!"));
 				#endif
 			} else {
-				att_rate[POS_Z] = MAX_ITEM_RATE/2;
+				if(angle < PI/4) {
+					att_rate[POS_Z] = MAX_ITEM_RATE/2;
+				} else {
+					att_rate[POS_Z] = 0.01f;
+				}
 			}
 		} else {
 			att_rate[POS_Z] = 0.0f;
