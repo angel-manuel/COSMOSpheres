@@ -29,6 +29,9 @@ void init_update() {
 
 	for(i = 0; i < NUMBER_OF_DEBRIS; ++i) {
 		game.getDebrisLocation(i, debris_position[i]);
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("Debris %i at [%f, %f, %f]\n", i, debris_position[i][POS_X], debris_position[i][POS_Y], debris_position[i][POS_Z]));
+		#endif
 	}
 
 	item_position[0][POS_X] = 0.50f;
