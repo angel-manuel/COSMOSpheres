@@ -1,3 +1,6 @@
+#define HEAD_DIST 3
+#define SIDE_DIST 4
+
 #ifdef DEBUG_ACTIVE
 float movement_last_debris;
 float movement_distance;
@@ -20,6 +23,9 @@ bool movement_moveto(float dst[3]) {
 	float delta[3];
 	float head[3];
 
+	mathVecSubtract(delta, dst, &our_state[POS], 3);		//delta = dst - pos
+	mathVecGetNormal(head, delta, 3);						//head = delta / |delta|
+
 	float head_vel[3];
 	mathVecScalarMult(head_vel, head, mathVecInner(head, &our_state[VEL], 3), 3);
 	float head_speed = mathVecMagnitude(head_vel, 3);
@@ -28,14 +34,10 @@ bool movement_moveto(float dst[3]) {
 
 	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS);
 	const float correction = danger_radius + 0.1f;
-
-	mathVecSubtract(delta, dst, &our_state[POS], 3);		//delta = dst - pos
 	
 	if(mathVecMagnitude(delta, 3) < MAX_ITEM_START_DIST && mathVecMagnitude(&our_state[VEL], 3) < MAX_ITEM_START_VEL) {
 		return true;
 	}
-
-	mathVecGetNormal(head, delta, 3);						//head = delta / |delta|
 
 	int debris_number;
 	float debris_vector[5];
@@ -47,10 +49,9 @@ bool movement_moveto(float dst[3]) {
 		if(!is_debris_collected[debris_number]) {
 			distanceToDebris(&our_state[POS], head, debris_position[debris_number], debris_vector);
 			desviation = (mathVecInner(side_vel, debris_vector, 3)/head_speed)*debris_vector[3];
-			if(debris_vector[4] - (danger_radius + desviation) < 0.0f) {
+			if(debris_vector[SIDE_DIST] - (danger_radius + desviation) < 0.0f) {
 				//Colisión
-				//DEBUG(("%i:[%f, %f, %f] at %f:%f\n", debris_number, debris_position[debris_number][POS_X], debris_position[debris_number][POS_Y], debris_position[debris_number][POS_Z], debris_vector[4], debris_vector[3]));
-				if(debris_vector[3] < nearest_debris_distance && debris_vector[3] > 0.0f) {
+				if(debris_vector[HEAD_DIST] < nearest_debris_distance && debris_vector[HEAD_DIST] > 0.0f) {
 					nearest_debris = debris_number;
 					nearest_debris_vector = debris_vector;
 					nearest_debris_distance = debris_vector[3];
@@ -74,7 +75,7 @@ bool movement_moveto(float dst[3]) {
 		#ifdef DEBUG_ACTIVE
 		movement_last_debris = (float)nearest_debris;
 		movement_distance = nearest_debris_distance;
-		DEBUG(("movement:debris %i = [%f, %f, %f] at %f\n", nearest_debris, debris_position[nearest_debris][POS_X], debris_position[nearest_debris][POS_Y], debris_position[nearest_debris][POS_Z], nearest_debris_distance));
+		DEBUG(("movement:debris %i at %f:%f\n", nearest_debris, debris_position[nearest_debris][POS_X], debris_position[nearest_debris][POS_Y], debris_position[nearest_debris][POS_Z], nearest_debris_distance, nearest_debris_vector[SIDE_DIST]));
 		DEBUG(("movement:next = [%f, %f, %f]\n", next[POS_X], next[POS_Y], next[POS_Z]));
 		#endif
 
