@@ -4,36 +4,29 @@
 //vd = Vector Director(debe ser unitario)
 //p = Punto a comprobar(DEBRIS)
 //ret = vector hasta el Debris(el cuarto valor es la distancia)
-void distanceToDebris(float x0[3], float vd[3], float p[3], float ret[5]){
-  float dist_XY, dist_YZ;
-  //XY
-  float nXY[2] = {-1.0f/vd[POS_Y], vd[POS_X]};
-  mathVecNormalize(nXY, 2);
-  dist_XY = mathVecInner(p, nXY, 2) - mathVecInner(x0, nXY, 2);
-  //YZ
-  float nYZ[2] = {-1.0f/vd[POS_Z], vd[POS_Y]};
-  mathVecNormalize(nYZ, 2);
-  dist_YZ = mathVecInner(p+1, nYZ, 2) - mathVecInner(x0+1, nYZ, 2);
-  dist_YZ = -dist_XY*vd[POS_X]*vd[POS_Z]; 
+void distanceToDebris(float x1[3], float x2[3], float p[3], float ret[5]){
+  float x1_p[3];
+  float x2_x1[3];
 
-  mathVecScalarMult(ret, nXY, dist_XY, 2);
-  ret[POS_Z] = nYZ[1] * dist_YZ;
+  mathVecSubtract(x1_p, x1, p, 3);
+  mathVecSubtract(x2_x1, x2, x1, 3);
 
-  float tmp[3];
-  mathVecAdd(tmp, p, ret, 3);
-  mathVecSubtract(tmp, tmp, x0, 3);
-  ret[3] = mathVecMagnitude(tmp, 3);
+  float d = mathVecMagnitude(x2_x1, 3);
+  float t = mathVecInner(x1_p, x2_x1, 3)/(d*d);
 
-  if(tmp[POS_X]*vd[POS_X] < 0 || tmp[POS_Y]*vd[POS_Y] < 0 || tmp[POS_Z]*vd[POS_Z] < 0) {
-    ret[3] = -ret[3];
+  ret[POS_X] = ((x1[POS_X]-p[POS_X])+(x2[POS_X]-x1[POS_X]))*t;
+  ret[POS_Y] = ((x1[POS_Y]-p[POS_Y])+(x2[POS_Y]-x1[POS_Y]))*t;
+  ret[POS_Z] = ((x1[POS_Z]-p[POS_Z])+(x2[POS_Z]-x1[POS_Z]))*t;
+
+  ret[3] = t;
+  ret[4] = mathVecNormalize(ret, 3);
+
+  #ifdef DEBUG_ACTIVE
+  if(seconds == 0) {
+  DEBUG(("x1 = "));debug_print_vector(x1, 3);
+  DEBUG(("x2 = "));debug_print_vector(x2, 3);
+  DEBUG(("p = "));debug_print_vector(p, 3);
+  DEBUG(("ret = "));debug_print_vector(ret, 5);
   }
-  ret[4] = mathVecMagnitude(ret, 3);
-  mathVecNormalize(ret, 3);
-  /*
-  DEBUG(("x0 = [%f, %f, %f]\n", x0[POS_X], x0[POS_Y], x0[POS_Z]));
-  DEBUG(("vd = [%f, %f, %f]\n", vd[POS_X], vd[POS_Y], vd[POS_Z]));
-  DEBUG(("p = [%f, %f, %f]\n", p[POS_X], p[POS_Y], p[POS_Z]));
-  DEBUG(("ret = [%f, %f, %f, %f, %f]\n", ret[0], ret[1], ret[2], ret[3], ret[4]));
-  */
-  //DEBUG(("p = [%f, %f, %f]\nd = %f\n", p[POS_X], p[POS_Y], p[POS_Z], ret[4]));
+  #endif
 }

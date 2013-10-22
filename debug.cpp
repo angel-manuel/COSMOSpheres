@@ -51,4 +51,14 @@ bool debug_track(int track, float* var, char* name) {
 	}
 	return false;
 }
+
+void debug_print_vector(float* v, int n) {
+	int i;
+	DEBUG(("["));
+	for(i = 0; i < n; ++i) {
+		DEBUG(("%f ", v[i]));
+	}
+	DEBUG(("\b]\n"));
+}
+
 #endif//DEBUG_ACTIVE
