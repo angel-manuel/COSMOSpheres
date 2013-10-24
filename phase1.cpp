@@ -59,7 +59,7 @@ bool phase1_take(int target_item) {
 				if(angle < PI/4) {
 					att_rate[POS_Z] = MAX_ITEM_RATE/2;
 				} else {
-					att_rate[POS_Z] = 0.01f;
+					att_rate[POS_Z] = 0.03f;
 				}
 			}
 		} else {

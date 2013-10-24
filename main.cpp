@@ -85,7 +85,6 @@ void init() {
 void loop() {
 	loop_update();
 	#ifdef DEBUG_ACTIVE
-	DEBUG(("%i segundos\n", seconds));
 	debug_update();
 	#endif
 
