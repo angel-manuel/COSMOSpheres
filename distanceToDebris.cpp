@@ -18,6 +18,6 @@ void distanceToDebris(float x1[3], float x2[3], float p[3], float ret[5]){
   mathVecScalarMult(tmp, x2_x1, t, 3);
   mathVecAdd(ret, x1_p, tmp, 3);
 
-  ret[3] = ABS(t*d);
+  ret[3] = t*d;
   ret[4] = mathVecNormalize(ret, 3);
 }
