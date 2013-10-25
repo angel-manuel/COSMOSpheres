@@ -28,7 +28,6 @@ void phase1_loop() {
 //return -> true si el item ya ha sido recojido, false en todos los demas casos
 bool phase1_take(int target_item) {
 	float zero[3] = {0.0f};
-	float att_rate[3] = {0.0f};
 
 	if(is_item_collected[target_item]) {
 		phase1_taking = false;
@@ -54,27 +53,29 @@ bool phase1_take(int target_item) {
 		dot = mathVecInner(phase1_initial_att, &our_state[ATT], 3);
 		angle = acosf(dot);
 
+		api.setVelocityTarget(zero);
+
+		//zero = att_rate
 		if(!is_item_collected[target_item]) {
 			if(angle > PI/2) {
-				att_rate[POS_Z] = 0.0f;
+				zero[POS_Z] = 0.0f;
 				phase1_taking = false;
 				#ifdef DEBUG_ACTIVE
 				DEBUG(("phase1_take:Fail!"));
 				#endif
 			} else {
 				if(angle < 3*PI/8) {
-					att_rate[POS_Z] = MAX_ITEM_RATE/2;
+					zero[POS_Z] = MAX_ITEM_RATE/2;
 				} else {
-					att_rate[POS_Z] = 0.1f;
+					zero[POS_Z] = 0.1f;
 				}
 			}
 		} else {
-			att_rate[POS_Z] = 0.0f;
+			zero[POS_Z] = 0.0f;
 		}
 
 		api.setPositionTarget(item_position[target_item]);
-		api.setVelocityTarget(zero);
-		api.setAttRateTarget(att_rate);
+		api.setAttRateTarget(zero);
 	} else {
 		phase1_taking = false;
 	}

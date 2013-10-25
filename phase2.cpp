@@ -1,6 +1,3 @@
-void phase2_init() {
-}
-
 void phase2_loop() {
 	#ifdef DEGUB_ACTIVE
 	DEBUG(("phase2:laser_shots_left = %i\n", laser_shots_left));
@@ -34,9 +31,10 @@ void phase2_prepare() {
 
 bool phase2_follow() {
 	float raycast[5];
-	float head[3];
-	mathVecAdd(head, &our_state[POS], &our_state[ATT], 3);
-	distanceToDebris(&our_state[POS], head, &our_comet_state[POS], raycast);
+	float tmp[3];
+	//tmp = head
+	mathVecAdd(tmp, &our_state[POS], &our_state[ATT], 3);
+	distanceToDebris(&our_state[POS], tmp, &our_comet_state[POS], raycast);
 
 	if(raycast[4] < COMET_RADIUS) {
 		return true;
@@ -49,13 +47,13 @@ bool phase2_follow() {
 	float target_vel[3] = {0.0f, our_comet_state[VEL_Y], our_comet_state[VEL_Z]};
 	api.setVelocityTarget(target_vel);
 
-	float target_att[3];
-	float fut_state[3];
-	mathVecAdd(fut_state, &our_state[POS], &our_state[VEL], 3);
-	mathVecSubtract(target_att, &fut_comet_state[POS], &fut_state[POS], 3);
-	mathVecNormalize(target_att, 3);
+	//tmp = fut_state
+	mathVecAdd(tmp, &our_state[POS], &our_state[VEL], 3);
+	//target_vel = target_att
+	mathVecSubtract(target_vel, &fut_comet_state[POS], &tmp[POS], 3);
+	mathVecNormalize(target_vel, 3);
 
-	api.setAttitudeTarget(target_att);
+	api.setAttitudeTarget(target_vel);
 
 	return false;
 }

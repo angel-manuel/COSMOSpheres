@@ -1,5 +1,4 @@
 int seconds;	//Segundos de juego pasados
-int phase;		//Fase de juego actual
 
 //update()
 bool blue_sphere;			//Indica si somos la SPHERE azul
@@ -17,8 +16,6 @@ float item_position[NUMBER_OF_ITEMS][3];	//Contiene las posiciones de los items
 float our_comet_state[6];			//Estado de nuestro cometa ({pos}{vel})
 
 int laser_shots_left;			//Número de disparos láser disponibles
-
-float mass;		//Masa actual de nuestro satélite
 //update()
 
 void init_update() {
@@ -40,10 +37,6 @@ void init_update() {
 	item_position[1][POS_X] = -0.50f;
 	item_position[1][POS_Y] = 0.65f;
 	item_position[1][POS_Z] = 0.0f;
-
-	#ifdef DEBUG_ACTIVE
-	debug_track(0, &mass, (char*)"mass");
-	#endif
 }
 
 void loop_update() {
@@ -59,18 +52,15 @@ void loop_update() {
 		is_item_collected[i] = game.haveItem(OUR, i) || game.haveItem(THEIR, i);
 	}
 
-	if(phase == 2) {
+	if(seconds > 90) {
 		game.getCometState(OUR, our_comet_state);
 	}
 
 	laser_shots_left = game.laserShotsRemaining();
-
-	mass = game.getMass();
 }
 
 void init() {
   seconds = 0;
-  phase = 1;
 
   #ifdef DEBUG_ACTIVE
   debug_init();
@@ -79,7 +69,6 @@ void init() {
 
   movement_init();
   phase1_init();
-  phase2_init();
 }
 
 void loop() {
@@ -89,10 +78,8 @@ void loop() {
 	#endif
 
   if(seconds < 90) {
-  	phase = 1;
     phase1_loop();
   } else {
-  	phase = 2;
     phase2_loop();
   }
 
