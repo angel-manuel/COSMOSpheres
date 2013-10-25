@@ -39,6 +39,11 @@ bool movement_moveto(float dst[3]) {
 		return true;
 	}
 
+	if(seconds >= 90 || !game.isNetBroken()) {
+		api.setPositionTarget(dst);
+		return false;
+	}
+
 	int debris_number;
 	float debris_vector[5];
 	int nearest_debris = -1;

@@ -56,10 +56,10 @@ bool phase1_take(int target_item) {
 				DEBUG(("phase1_take:Fail!"));
 				#endif
 			} else {
-				if(angle < PI/4) {
+				if(angle < 3*PI/8) {
 					att_rate[POS_Z] = MAX_ITEM_RATE/2;
 				} else {
-					att_rate[POS_Z] = 0.03f;
+					att_rate[POS_Z] = 0.1f;
 				}
 			}
 		} else {
