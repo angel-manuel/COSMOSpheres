@@ -1,16 +1,22 @@
 //Se encarga de la fase primera
 bool phase1_taking;
+bool phase1_collision;
 float phase1_initial_att[3];
 
 void phase1_init() {
 	phase1_taking = false;
+	phase1_collision = false;
 }
 
 void phase1_loop() {
 	const int target_item = (blue_sphere) ? 1 : 0;
 	const int target_item2 = (blue_sphere) ? 0 : 1;
 
-	if(phase1_take(target_item)) {
+	if(!phase1_collision) {
+		phase1_collision = game.wasCollisionActive();
+	}
+
+	if(phase1_collision || phase1_take(target_item)) {
 		if(phase1_take(target_item2)) {
 			phase2_prepare();
 		}
