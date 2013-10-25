@@ -52,7 +52,7 @@ void loop_update() {
 		is_item_collected[i] = game.haveItem(OUR, i) || game.haveItem(THEIR, i);
 	}
 
-	if(seconds > 90) {
+	if(seconds >= 90) {
 		game.getCometState(OUR, our_comet_state);
 	}
 
@@ -67,8 +67,11 @@ void init() {
   #endif
   init_update();
 
+  #ifdef DEBUG_ACTIVE
   movement_init();
+  #endif
   phase1_init();
+  phase2_init();
 }
 
 void loop() {

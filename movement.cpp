@@ -6,40 +6,40 @@ float movement_last_debris;
 float movement_distance;
 #endif
 
+#ifdef DEBUG_ACTIVE
 void movement_init() {
-	#ifdef DEBUG_ACTIVE
 	movement_last_debris = -1.0f;
 	movement_distance = 0.0f;
 	debug_track(5, &movement_distance, (char*)"movement_debris_distance");
 	debug_track(6, &movement_last_debris, (char*)"movement_last_debris");
-	#endif
 }
+#endif
 
 //movement_moveto
 //dst -> Destino
 //tvel -> Velocidad objetivo
 //return -> true si ya se ha llegado, false en todos los demas casos
-bool movement_moveto(float dst[3]) {
+bool movement_moveto(float dst[3], bool direct) {
 	float delta[3];
 	float head[3];
 
 	mathVecSubtract(delta, dst, &our_state[POS], 3);		//delta = dst - pos
-	mathVecGetNormal(head, delta, 3);						//head = delta / |delta|
+	mathVecScalarMult(head, delta, 1.0f/mathVecMagnitude(delta, 3), 3);  //head = delta / |delta|
 
-	float head_vel[3];
-	mathVecScalarMult(head_vel, head, mathVecInner(head, &our_state[VEL], 3), 3);
-	float head_speed = mathVecMagnitude(head_vel, 3);
-	float side_vel[3];
-	mathVecSubtract(side_vel, &our_state[VEL], head_vel, 3);
-
-	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS) + 0.03f;
-	const float correction = danger_radius + 0.02f;
-	
 	if(mathVecMagnitude(delta, 3) < MAX_ITEM_START_DIST && mathVecMagnitude(&our_state[VEL], 3) < MAX_ITEM_START_VEL) {
 		return true;
 	}
 
-	if(seconds >= 90 || !game.isNetBroken()) {
+	//delta = head_vel
+	mathVecScalarMult(delta, head, mathVecInner(head, &our_state[VEL], 3), 3);
+	float head_speed = mathVecMagnitude(delta, 3);
+	float side_vel[3];
+	mathVecSubtract(side_vel, &our_state[VEL], delta, 3);
+
+	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS) + 0.03f;
+	const float correction = danger_radius + 0.02f;
+
+	if(direct || seconds >= 90 || !game.isNetBroken()) {
 		api.setPositionTarget(dst);
 		return false;
 	}
@@ -68,26 +68,21 @@ bool movement_moveto(float dst[3]) {
 		}
 	}
 
-	if(nearest_debris >= 0 && nearest_debris < NUMBER_OF_DEBRIS && nearest_debris_distance < mathVecMagnitude(delta, 3)) { //Si nearest_debris es un debris válido
-		float tmp[3];
-		float next[3];
+	if(nearest_debris >= 0 && nearest_debris < NUMBER_OF_DEBRIS) { //Si nearest_debris es un debris válido
+		//delta = tmp
+		//debris_vector = next
 
-		mathVecScalarMult(tmp, nearest_debris_vector, correction, 3);
-		mathVecAdd(next, debris_position[nearest_debris], tmp, 3);
-
-		if(ABS(next[POS_X]) > 0.64f || ABS(next[POS_Y]) > 0.8f || ABS(next[POS_Z]) > 0.64f) {
-			mathVecScalarMult(tmp, nearest_debris_vector, -correction, 3);
-			mathVecAdd(next, debris_position[nearest_debris], tmp, 3);
-		}
+		mathVecScalarMult(delta, nearest_debris_vector, correction, 3);
+		mathVecAdd(debris_vector, debris_position[nearest_debris], delta, 3);
 
 		#ifdef DEBUG_ACTIVE
 		movement_last_debris = (float)nearest_debris;
 		movement_distance = nearest_debris_distance;
 		DEBUG(("movement:debris %i at %f:%f\n", nearest_debris, debris_position[nearest_debris][POS_X], debris_position[nearest_debris][POS_Y], debris_position[nearest_debris][POS_Z], nearest_debris_distance, nearest_debris_vector[SIDE_DIST]));
-		DEBUG(("movement:next = [%f, %f, %f]\n", next[POS_X], next[POS_Y], next[POS_Z]));
+		DEBUG(("movement:next = [%f, %f, %f]\n", debris_vector[POS_X], debris_vector[POS_Y], debris_vector[POS_Z]));
 		#endif
 
-		api.setPositionTarget(next);
+		api.setPositionTarget(debris_vector);
 	} else {
 		#ifdef DEBUG_ACTIVE
 		movement_last_debris = -1.0f;
