@@ -1,6 +1,7 @@
 //Se encarga de la fase primera
 bool phase1_taking;
 int phase1_last_item;
+int phase1_prefered_item;
 bool phase1_collision;
 float phase1_initial_att[3];
 
@@ -8,15 +9,19 @@ void phase1_init() {
 	phase1_taking = false;
 	phase1_last_item = -1;
 	phase1_collision = false;
+	phase1_prefered_item = (blue_sphere) ? 1 : 0;
 }
 
 void phase1_loop() {
-	if(!phase1_collision) {
+	if(!phase1_collision && seconds < 25) {
 		phase1_collision = game.wasCollisionActive();
+		if(phase1_collision) {
+			phase1_prefered_item = (phase1_prefered_item == 1) ? 0 : 1;
+		}
 	}
 
-	if(phase1_collision || phase1_take(((blue_sphere) ? 1 : 0), false)) {
-		if(phase1_take(((blue_sphere) ? 0 : 1), true)) {
+	if(phase1_take(phase1_prefered_item, false)) {
+		if(phase1_take((phase1_prefered_item == 1) ? 0 : 1, true)) {
 			phase2_prepare();
 		}
 	}

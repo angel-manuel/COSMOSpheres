@@ -28,6 +28,9 @@ bool movement_moveto(float dst[3], bool direct) {
 
 	if(mathVecMagnitude(delta, 3) < MAX_ITEM_START_DIST && mathVecMagnitude(&our_state[VEL], 3) < MAX_ITEM_START_VEL) {
 		return true;
+	} else {
+		float zero[3] = {0.0f};
+		api.setAttRateTarget(zero);
 	}
 
 	//delta = head_vel
