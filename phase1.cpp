@@ -13,7 +13,7 @@ void phase1_init() {
 }
 
 void phase1_loop() {
-	if(!phase1_collision && seconds < 25) {
+	if(!phase1_collision && seconds > 25) {
 		phase1_collision = game.wasCollisionActive();
 		if(phase1_collision) {
 			phase1_prefered_item = (phase1_prefered_item == 1) ? 0 : 1;

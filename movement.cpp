@@ -29,8 +29,9 @@ bool movement_moveto(float dst[3], bool direct) {
 	if(mathVecMagnitude(delta, 3) < MAX_ITEM_START_DIST && mathVecMagnitude(&our_state[VEL], 3) < MAX_ITEM_START_VEL) {
 		return true;
 	} else {
-		float zero[3] = {0.0f};
-		api.setAttRateTarget(zero);
+		//delta = zero
+		delta[0] = delta[1] = delta[2] = 0.0f;
+		api.setAttRateTarget(delta);
 	}
 
 	//delta = head_vel
@@ -55,7 +56,7 @@ bool movement_moveto(float dst[3], bool direct) {
 	float desviation;
 	for(debris_number = 0; debris_number < NUMBER_OF_DEBRIS; debris_number++) {
 		if(!is_debris_collected[debris_number]) {
-			distanceToDebris(&our_state[POS], head, debris_position[debris_number], debris_vector);
+			distanceToDebris(&our_state[POS], dst, debris_position[debris_number], debris_vector);
 			desviation = (mathVecInner(side_vel, debris_vector, 3)/head_speed)*debris_vector[3];
 			if((debris_vector[SIDE_DIST] - (danger_radius + desviation)) < 0.0f) {
 				//Colisión
