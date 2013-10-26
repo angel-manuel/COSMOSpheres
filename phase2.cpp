@@ -22,7 +22,11 @@ void phase2_loop() {
 			#endif
 		}
 	} else {
-		api.setPositionTarget(&our_comet_state[POS]);
+		if(phase2_strategy == 1) {
+			our_comet_state[POS_X] += (blue_sphere) ? -0.20f: 0.20f;
+			our_comet_state[POS_Y] += 0.1f;
+		}
+		api.setPositionTarget(&our_comet_state[POS]);	
 	}
 }
 
@@ -53,7 +57,7 @@ bool phase2_follow() {
 	mathVecAdd(tmp, &our_state[POS], &our_state[ATT], 3);
 	distanceToDebris(&our_state[POS], tmp, &our_comet_state[POS], raycast);
 
-	ret = raycast[4] < COMET_RADIUS;
+	ret = raycast[4] < (COMET_RADIUS - 0.001f);
 
 	//raycast = fut_comet_state
 	float fut_comet_state[6];
