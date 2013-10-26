@@ -43,7 +43,7 @@ bool movement_moveto(float dst[3], bool direct) {
 	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS) + 0.03f;
 	const float correction = danger_radius + 0.02f;
 
-	if(direct || seconds >= 90 || !game.isNetBroken()) {
+	if(direct || seconds >= 90) {
 		api.setPositionTarget(dst);
 		return false;
 	}

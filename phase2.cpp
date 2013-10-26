@@ -22,11 +22,6 @@ void phase2_loop() {
 			#endif
 		}
 	} else {
-		if(!is_item_collected[(blue_sphere) ? 0 : 1] ) {
-			if(!phase1_take(blue_sphere ? 0 : 1, true)) {
-				return;
-			}
-		}
 		api.setPositionTarget(&our_comet_state[POS]);
 	}
 }
