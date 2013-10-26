@@ -53,12 +53,10 @@ bool movement_moveto(float dst[3], bool direct) {
 	int nearest_debris = -1;
 	float nearest_debris_distance = 1000000.0f;
 	float nearest_debris_vector[5];
-	float desviation;
 	for(debris_number = 0; debris_number < NUMBER_OF_DEBRIS; debris_number++) {
 		if(!is_debris_collected[debris_number]) {
 			distanceToDebris(&our_state[POS], dst, debris_position[debris_number], debris_vector);
-			desviation = (mathVecInner(side_vel, debris_vector, 3)/head_speed)*debris_vector[3];
-			if((debris_vector[SIDE_DIST] - (danger_radius + desviation)) < 0.0f) {
+			if((debris_vector[SIDE_DIST] - (danger_radius + ((mathVecInner(side_vel, debris_vector, 3)/head_speed)*debris_vector[3]))) < 0.0f) {
 				//Colisión
 				if(debris_vector[HEAD_DIST] < nearest_debris_distance && debris_vector[HEAD_DIST] > 0.0f) {
 					nearest_debris = debris_number;
@@ -72,21 +70,21 @@ bool movement_moveto(float dst[3], bool direct) {
 		}
 	}
 
+	api.setPositionTarget(dst);
 	if(nearest_debris >= 0) { //Si nearest_debris es un debris válido
 		//delta = tmp
 		float needed_speed_up = correction - (nearest_debris_vector[SIDE_DIST] + ((mathVecInner(side_vel, nearest_debris_vector, 3)/head_speed)*nearest_debris_vector[3]));
 		mathVecScalarMult(delta, nearest_debris_vector, needed_speed_up, 3);
 
-		api.setPositionTarget(dst);
 		api.setForces(delta);
-	} else {
-		#ifdef DEBUG_ACTIVE
+	}
+	#ifdef DEBUG_ACTIVE
+	else {
 		movement_last_debris = -1.0f;
 		nearest_debris_distance = 0.0f;
 		DEBUG(("movement:Clear!\n"));
-		#endif
-		api.setPositionTarget(dst);
 	}
+	#endif
 
 	return false;
 }
