@@ -21,7 +21,7 @@ void phase1_loop() {
 	}
 
 	if(seconds < 80 || phase1_taking) {
-		if(phase1_take(phase1_prefered_item, false) && phase1_take((phase1_prefered_item == 1) ? 0 : 1, true)) {
+		if(phase1_take(phase1_prefered_item, false) && (phase1_collision || phase1_take((phase1_prefered_item == 1) ? 0 : 1, true))) {
 			phase2_prepare();
 		}
 	} else {
@@ -69,7 +69,7 @@ bool phase1_take(int target_item, bool direct) {
 		//zero = att_rate
 		if(!is_item_collected[target_item]) {
 			if(angle > PI/2) {
-				zero[POS_Z] = 0.0f;
+				//zero[POS_Z] = 0.0f;
 				phase1_taking = false;
 				#ifdef DEBUG_ACTIVE
 				DEBUG(("phase1_take:Fail!"));
@@ -81,9 +81,9 @@ bool phase1_take(int target_item, bool direct) {
 					zero[POS_Z] = 0.1f;
 				}
 			}
-		} else {
+		}/* else {
 			zero[POS_Z] = 0.0f;
-		}
+		}*/
 
 		api.setPositionTarget(item_position[target_item]);
 		api.setAttRateTarget(zero);
