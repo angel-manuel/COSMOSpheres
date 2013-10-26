@@ -51,15 +51,14 @@ void phase2_prepare() {
 }
 
 bool phase2_follow() {
+	bool ret;
 	float raycast[6];
 	float tmp[3];
 	//tmp = head
 	mathVecAdd(tmp, &our_state[POS], &our_state[ATT], 3);
 	distanceToDebris(&our_state[POS], tmp, &our_comet_state[POS], raycast);
 
-	if(raycast[4] < COMET_RADIUS) {
-		return true;
-	}
+	ret = raycast[4] < COMET_RADIUS;
 
 	//raycast = fut_comet_state
 	float fut_comet_state[6];
@@ -81,5 +80,5 @@ bool phase2_follow() {
 
 	api.setAttitudeTarget(raycast);
 
-	return false;
+	return ret;
 }
