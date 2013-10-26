@@ -13,17 +13,21 @@ void phase1_init() {
 }
 
 void phase1_loop() {
-	if(!phase1_collision && seconds > 25) {
+	if(!phase1_collision) {
 		phase1_collision = game.wasCollisionActive();
 		if(phase1_collision) {
 			phase1_prefered_item = (phase1_prefered_item == 1) ? 0 : 1;
 		}
 	}
 
-	if(phase1_take(phase1_prefered_item, false)) {
-		if(phase1_take((phase1_prefered_item == 1) ? 0 : 1, true)) {
-			phase2_prepare();
+	if(seconds < 80 && !phase1_taking) {
+		if(phase1_take(phase1_prefered_item, false)) {
+			if(phase1_take((phase1_prefered_item == 1) ? 0 : 1, true)) {
+				phase2_prepare();
+			}
 		}
+	} else {
+		phase2_prepare();
 	}
 }
 
