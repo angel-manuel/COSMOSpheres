@@ -20,7 +20,7 @@ void phase1_loop() {
 		}
 	}
 
-	if(seconds < 80 && !phase1_taking) {
+	if(seconds < 80 || phase1_taking) {
 		if(phase1_take(phase1_prefered_item, false) && phase1_take((phase1_prefered_item == 1) ? 0 : 1, true)) {
 			phase2_prepare();
 		}
