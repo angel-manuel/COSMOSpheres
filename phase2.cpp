@@ -1,3 +1,5 @@
+#define PHASE2_PREDICTION_TIME 3
+
 int phase2_strategy;
 
 void phase2_init() {
@@ -37,11 +39,13 @@ void phase2_prepare() {
 		phase2_strategy = (laser_shots_left == 20) ? 1 : 0;
 	}
 
-	float target_pos[3] = {(blue_sphere) ? 0.5f : -0.5f, (phase2_strategy == 1) ? 0.5f : 0.2f, (blue_sphere) ? 0.4f : -0.4f};
-	float target_att[3] = {(blue_sphere) ? -0.5f : 0.5f, (phase2_strategy == 1) ? 0.3f : 0.6f, (blue_sphere) ? -0.4f : 0.4f};
+	float target_pos[3] = {(blue_sphere) ? 0.5f : -0.5f, (phase2_strategy == 1) ? 0.5f : 0.15f, (blue_sphere) ? 0.4f : -0.4f};
+	float target_att[3] = {(blue_sphere) ? -0.5f : 0.5f, (phase2_strategy == 1) ? 0.3f : 0.65f, (blue_sphere) ? -0.4f : 0.4f};
 	if(phase2_strategy == 0) {
-		target_pos[2] *= -1.0f;
-		target_att[2] *= -1.0f;
+		target_pos[POS_X] = (blue_sphere) ? 0.25f : -0.25f;
+		target_att[POS_X] = (blue_sphere) ? -0.25f : 0.25f;
+		target_pos[POS_Z] *= -1.0f;
+		target_att[POS_Z] *= -1.0f;
 	}
 	mathVecNormalize(target_att, 3);
 
@@ -61,7 +65,7 @@ bool phase2_follow() {
 
 	//raycast = fut_comet_state
 	float fut_comet_state[6];
-	game.predictCometState(1, our_comet_state, fut_comet_state);
+	game.predictCometState(PHASE2_PREDICTION_TIME, our_comet_state, fut_comet_state);
 	//tmp = fut_state
 	mathVecAdd(tmp, &our_state[POS], &our_state[VEL], 3);
 
