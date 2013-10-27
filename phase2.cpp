@@ -24,11 +24,9 @@ void phase2_loop() {
 			#endif
 		}
 	} else {
-		if(phase2_strategy == 1) {
-			our_comet_state[POS_X] += (blue_sphere) ? -0.20f: 0.20f;
-			our_comet_state[POS_Y] += 0.1f;
-		}
-		api.setPositionTarget(&our_comet_state[POS]);	
+		our_comet_state[POS_X] += (blue_sphere) ? -0.20f: 0.20f;
+		our_comet_state[POS_Y] += 0.1f;
+		api.setPositionTarget(&our_comet_state[POS]);
 	}
 }
 
@@ -39,11 +37,11 @@ void phase2_prepare() {
 		phase2_strategy = (laser_shots_left == 20) ? 1 : 0;
 	}
 
-	float target_pos[3] = {(blue_sphere) ? 0.5f : -0.5f, (phase2_strategy == 1) ? 0.5f : 0.15f, (blue_sphere) ? 0.4f : -0.4f};
-	float target_att[3] = {(blue_sphere) ? -0.5f : 0.5f, (phase2_strategy == 1) ? 0.3f : 0.65f, (blue_sphere) ? -0.4f : 0.4f};
+	float target_pos[3] = {(blue_sphere) ? 0.5f : -0.5f, (phase2_strategy == 1) ? 0.5f : 0.4f, (blue_sphere) ? 0.4f : -0.4f};
+	float target_att[3] = {(blue_sphere) ? -0.5f : 0.5f, (phase2_strategy == 1) ? 0.3f : 0.4f, (blue_sphere) ? -0.4f : 0.4f};
 	if(phase2_strategy == 0) {
-		target_pos[POS_X] = (blue_sphere) ? 0.25f : -0.25f;
-		target_att[POS_X] = (blue_sphere) ? -0.25f : 0.25f;
+		target_pos[POS_X] = (blue_sphere) ? 0.1f : -0.1f;
+		target_att[POS_X] = (blue_sphere) ? -0.1f : 0.1f;
 		target_pos[POS_Z] *= -1.0f;
 		target_att[POS_Z] *= -1.0f;
 	}
@@ -70,7 +68,7 @@ bool phase2_follow() {
 
 	//debris_position[2] = target_vel
 	debris_position[2][POS_X] = 0.0f;
-	debris_position[2][POS_Y] = (phase2_strategy == 1) ? our_comet_state[VEL_Y] : 0.0f;
+	debris_position[2][POS_Y] = our_comet_state[VEL_Y];
 	debris_position[2][POS_Z] = (phase2_strategy == 1) ? our_comet_state[VEL_Z] : 0.0f;
 	api.setVelocityTarget(debris_position[2]);
 
