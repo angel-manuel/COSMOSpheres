@@ -48,8 +48,19 @@ void phase2_prepare() {
 		target_att[POS_Z] *= -1.0f;
 	}
 	mathVecNormalize(target_att, 3);
-
 	api.setPositionTarget(target_pos);
+	
+	/*
+	mathVecSubtract(target_pos, our_state, distance_vec, 3);
+	float target_distance = mathVecMagnitude(distance_vec,3);
+
+	if(target_distance > 0.6){
+		api.setVelocityTarget(target_pos);
+	}else{
+		api.setPositionTarget(target_pos);
+	}
+	*/
+	
 	api.setAttitudeTarget(target_att);
 }
 
