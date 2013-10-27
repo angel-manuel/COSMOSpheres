@@ -56,29 +56,26 @@ void phase2_prepare() {
 bool phase2_follow() {
 	bool ret;
 	float raycast[6];
-	float tmp[3];
-	//tmp = head
-	mathVecAdd(tmp, &our_state[POS], &our_state[ATT], 3);
-	distanceToDebris(&our_state[POS], tmp, &our_comet_state[POS], raycast);
+	//debris_position[0] = head
+	mathVecAdd(debris_position[0], &our_state[POS], &our_state[ATT], 3);
+	distanceToDebris(&our_state[POS], debris_position[0], &our_comet_state[POS], raycast);
 
 	ret = raycast[4] < (COMET_RADIUS - 0.001f);
 
 	//raycast = fut_comet_state
 	float fut_comet_state[6];
 	game.predictCometState(PHASE2_PREDICTION_TIME, our_comet_state, fut_comet_state);
-	//tmp = fut_state
-	mathVecAdd(tmp, &our_state[POS], &our_state[VEL], 3);
+	//debris_position[1] = fut_state
+	mathVecAdd(debris_position[1], &our_state[POS], &our_state[VEL], 3);
 
-	if(phase2_strategy == 1) {
-		float target_vel[3] = {0.0f, our_comet_state[VEL_Y], our_comet_state[VEL_Z]};
-		api.setVelocityTarget(target_vel);
-	} else {
-		float target_vel[3] = {0.0f};
-		api.setVelocityTarget(target_vel);
-	}
+	//debris_position[2] = target_vel
+	debris_position[2][POS_X] = 0.0f;
+	debris_position[2][POS_Y] = (phase2_strategy == 1) ? our_comet_state[VEL_Y] : 0.0f;
+	debris_position[2][POS_Z] = (phase2_strategy == 1) ? our_comet_state[VEL_Z] : 0.0f;
+	api.setVelocityTarget(debris_position[2]);
 
 	//raycast = target_att
-	mathVecSubtract(raycast, &fut_comet_state[POS], &tmp[POS], 3);
+	mathVecSubtract(raycast, &fut_comet_state[POS], debris_position[1], 3);
 	mathVecNormalize(raycast, 3);
 
 	api.setAttitudeTarget(raycast);
