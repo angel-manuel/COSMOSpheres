@@ -1,3 +1,4 @@
+//The following line actives debugging. If you comment it out you will save a lot de code usage
 #define DEBUG_ACTIVE
 
 #define SPHERE_ANGULAR_INERTIA 0.023f
@@ -18,7 +19,7 @@
 #define MAX_ITEM_START_RATE 0.0401f
 #define MAX_ITEM_RATE 1.3962f
 
-//Indices de los valores en ZRState y similares
+//Indexes of the values contained in ZRState
 #define POS 0
 #define POS_X 0
 #define POS_Y 1
@@ -32,7 +33,7 @@
 #define ATT_Y 7
 #define ATT_Z 8
 #define RATE 9
-//Los siguiente ya están definidos
+//THe following ones are currently defined
 //#define RATE_X 9
 //#define RATE_Y 10
 //#define RATE_Z 11

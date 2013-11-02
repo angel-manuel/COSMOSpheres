@@ -1,6 +1,7 @@
-//Se encarga de la fase primera
-bool phase1_taking;
-int phase1_last_item;
+//phase1
+//It contains the logic for the phase 1
+bool phase1_taking;			//true if we are spinning on the item
+int phase1_last_item;		//The last item we were trying to pick up
 int phase1_prefered_item;
 bool phase1_collision;
 float phase1_initial_att[3];
@@ -13,14 +14,16 @@ void phase1_init() {
 }
 
 void phase1_loop() {
-	if(!phase1_collision) {
-		phase1_collision = game.wasCollisionActive();
+	if(!phase1_collision) {	//If we haven't collided yet
+		phase1_collision = game.wasCollisionActive(); //We check if we have collided
 		if(phase1_collision) {
+			//If we have collided we change our target item
 			phase1_prefered_item = (phase1_prefered_item == 1) ? 0 : 1;
 		}
 	}
 
 	if(seconds < 80 || phase1_taking) {
+		//If there is plenty of time or if we are currently spinning we take the items
 		if(phase1_take(phase1_prefered_item, false) && (phase1_collision || phase1_take((phase1_prefered_item == 1) ? 0 : 1, true))) {
 			phase2_prepare();
 		}
@@ -30,12 +33,13 @@ void phase1_loop() {
 }
 
 //phase1_take
-//target_item -> Número de item a cojer
-//return -> true si el item ya ha sido recojido, false en todos los demas casos
+//Tries to pick up a item
+//target_item -> Item number
+//return -> true if the item has already been picked up, false otherwise
 bool phase1_take(int target_item, bool direct) {
 	if(is_item_collected[target_item]) {
-		if(target_item == phase1_last_item)
-			phase1_taking = false;
+		//If the item has been picked up we return true
+		phase1_taking = false;
 		return true;
 	}
 
@@ -47,9 +51,11 @@ bool phase1_take(int target_item, bool direct) {
 	#endif
 
 	if(movement_moveto(item_position[target_item], direct) || phase1_taking) {
+		//If we have arrived or if we are currenly there spinning
 		float dot;
 		float angle;
 		if(!phase1_taking) {
+			//If we weren't spinning we record our current attitude to measure our rotation
 			phase1_taking = true;
 			int i;
 			for(i = 0; i < 3; ++i) {
@@ -62,7 +68,7 @@ bool phase1_take(int target_item, bool direct) {
 
 		dot = mathVecInner(phase1_initial_att, &our_state[ATT], 3);
 		//angle = acosf(dot);
-		angle = PI/2.0f - dot - (dot*dot*dot)/6.0f; //Series de taylor
+		angle = PI/2.0f - dot - (dot*dot*dot)/6.0f; //Taylor expansion of acos
 
 		api.setVelocityTarget(zero);
 
