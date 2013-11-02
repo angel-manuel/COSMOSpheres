@@ -15,8 +15,8 @@ https://www.zerorobotics.org/web/zero-robotics/tutorials
 Github
 ======
 
-Yo soy Ángel y participe en el ZeroRobotics del año pasado con la EPM y
-seguro que me habéis visto por allí si vais los domingos y Compumáticas.
+Yo soy Ángel y participé en el concurso ZeroRobotics del año pasado con la EPM y
+seguro que me habéis visto por allí si vais los domingos y a Compumáticas.
 El año pasado nos organizábamos por Dropbox, subíamos ideas y código.
 También usábamos el IDE(Integrated Development Editor) de ZeroRobotics
 y el problema es que no es muy cómodo de usar, es ciertamente lento a veces(zerorobotics.org incluso se llego a caer una vez) y no facilita todo lo que podría el trabajo en grupo.
@@ -97,7 +97,7 @@ Si el problema que te has propuesto resolver necesita editar el código necesita
 dolores de cabeza al resto: ve a la página del proyecto y busca el selector de branch(seguramente este seleccionada
 la branch master que es la principal), tendrás un cuadro de texto para elegir el nombre de tu nueva branch, pon el numero
 que tenga tu problema en el issue-tracker y algo descriptivo.
-Quizás tu problema no requiera editar código, entonces no necesitas una branch.
+Quizás tu problema no requiera editar código; entonces no necesitas una branch.
 
 3. Cook the code
 Resuelve el problema. Tienes a tu disposición el editor de Github pero te recomiendo que copies el código a ZeroRobotics
@@ -106,4 +106,27 @@ y lo trabajes y pruebes en ZR. Cuando quieras guardar para dejarlo para otro mom
 4. Añade tu branch al código común
 Cuando creas que has solucionado el problema ve a la página del proyecto y pulsa 'Compare & pull request', comprueba los
 cambios que has realizado, describe los cambios y mejoras que has introducido y pulsa 'Send pull request'. Tras eso Github
-se ocupara de resolver los conflictos y el código de la branch master incluirá tus mejoras.
+se ocupará de resolver los conflictos y el código de la branch master incluirá tus mejoras.
+
+
+English Version
+===============
+A repository created to help the alliance Sui Generis - EPM Miguel de Guzmán - Casual Developers
+
+Useful links
+============
+Game manual
+API reference: http://www.zerorobotics.org/documents/10429/374963/ZR_user_API.pdf
+Zero Robotics tutorials
+
+GitHub
+======
+As you should already know, we have chosen to write code through this page rather than using the official 
+IDE provided by Zero Robotics. You may ask, why so? To answer your curiosity, I will simply invite you to 
+try and edit a snippet of code in ZR IDE while one of your fellow companions is already working on it. Can
+you see the multiple errors popping out of nowhere? Yes? Well, that's your reason to change to GitHub.
+
+<b>What is Github?</b>
+GitHub is a platform developed to help open source programmers to coordinate their efforts and write code
+together. To do that it employs Git, a VCS (Version Control System) software which keeps track of the changes
+made to the repository by every developer collaborating in a proyect.
