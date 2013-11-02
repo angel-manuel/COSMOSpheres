@@ -61,8 +61,7 @@ pondré un ejemplo:
 
 Alicia y Berto están programando las SPHERES y se reparten el trabajo:
 Alicia se encarga de que la SPHERE recoja masa y suministro en la primera fase del juego
-y Berto se encarga de que la SPHERE dispare el láser y modifique la trayectoria del
-meteorito con su masa en la segunda fase.
+y Berto se encarga de que la SPHERE dispare el láser y modifique la trayectoria del meteorito con su masa en la segunda fase.
 
 Tanto Alicia como Berta están programando cosas que en su
 mayor parte no se solapan para nada excepto en un lugar,
@@ -115,9 +114,9 @@ A repository created to help the alliance Sui Generis - EPM Miguel de Guzmán - 
 
 Useful links
 ============
-Game manual
-API reference: http://www.zerorobotics.org/documents/10429/374963/ZR_user_API.pdf
-Zero Robotics tutorials
++<a href="http://www.zerorobotics.org/documents/10429/0/CosmoSPHERES_Manual.pdf">Game manual</a>
++<a href="http://www.zerorobotics.org/documents/10429/374963/ZR_user_API.pdf">API reference </a>
++<a href="https://www.zerorobotics.org/web/zero-robotics/tutorials">Zero Robotics tutorials</a>
 
 GitHub
 ======
@@ -128,5 +127,20 @@ you see the multiple errors popping out of nowhere? Yes? Well, that's your reaso
 
 <b>What is Github?</b>
 GitHub is a platform developed to help open source programmers to coordinate their efforts and write code
-together. To do that it employs Git, a VCS (Version Control System) software which keeps track of the changes
-made to the repository by every developer collaborating in a proyect.
+together. To do so it employs Git, a VCS (Version Control System) software which keeps track of the changes
+made to the repository by every developer collaborating in a proyect. This enables programmers to work with 
+no fear of getting in the way of other collaborators, unlike in the unfortunately not team friendly ZR IDE.
+
+Using GitHub
+============
+Before you continue reading, I invite you to create an account in GitHub.
+
+Ready? Then look carefully at the buttons shown over this file.
+
+  +Edit: Press Edit to fork the proyect and create a new version of the file, which you can submit after as a 
+  pull request.
+  +Raw: Clicking on Raw will return you a text-only page ready to copy-paste into the ZR IDE simulator.
+  +Blame: Blame will show you the file divided in sections, each of this sections along with the name of 
+  the editor who wrote the section and the date.
+  +History: History contains every single version made of the file, along with its editor.
+  
