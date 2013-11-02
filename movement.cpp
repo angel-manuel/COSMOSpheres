@@ -1,3 +1,6 @@
+//movement
+//Deals with the movement acroos the debris_field
+
 #define HEAD_DIST 3
 #define SIDE_DIST 4
 
@@ -16,9 +19,9 @@ void movement_init() {
 #endif
 
 //movement_moveto
-//dst -> Destino
-//tvel -> Velocidad objetivo
-//return -> true si ya se ha llegado, false en todos los demas casos
+//dst -> Destiny
+//direct -> If true does not uses debris avoidance
+//return -> true if we have arrived, false otherwise
 bool movement_moveto(float dst[3], bool direct) {
 	float delta[3];
 	float head[3];

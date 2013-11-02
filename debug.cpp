@@ -1,3 +1,7 @@
+//debug
+//This file leads with the function api.setDebug()
+//ONLY FOR DEBUGGING PURPORSES
+
 #define DEBUG_TRACKS 7 //Número de datos que se pueden seguir
 
 #ifdef DEBUG_ACTIVE

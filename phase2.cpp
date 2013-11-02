@@ -1,12 +1,20 @@
 #define PHASE2_PREDICTION_TIME 3
 
 int phase2_strategy;
+//phase2_strategy
+//0 -> Stay in place and shoot(10 laser shots)
+//1 -> Follow the comet and shoot(20 laser shots)
 
 void phase2_init() {
 	phase2_strategy = -1;
 }
 
 void phase2_loop() {
+	//If we dont have a strategy we decide what to do
+	if(phase2_strategy == -1) {
+		phase2_strategy = (laser_shots_left == 20) ? 1 : 0;
+	}
+
 	#ifdef DEGUB_ACTIVE
 	DEBUG(("phase2:laser_shots_left = %i\n", laser_shots_left));
 	#endif
@@ -33,6 +41,7 @@ void phase2_loop() {
 //phase2_prepare
 //Se coloca en posición para disparar al cometa por primera vez
 void phase2_prepare() {
+	//If we dont have a strategy we decide what to do
 	if(phase2_strategy == -1) {
 		phase2_strategy = (laser_shots_left == 20) ? 1 : 0;
 	}
@@ -47,17 +56,6 @@ void phase2_prepare() {
 	}
 	mathVecNormalize(target_att, 3);
 	api.setPositionTarget(target_pos);
-	
-	/*
-	mathVecSubtract(target_pos, our_state, distance_vec, 3);
-	float target_distance = mathVecMagnitude(distance_vec,3);
-
-	if(target_distance > 0.6){
-		api.setVelocityTarget(target_pos);
-	}else{
-		api.setPositionTarget(target_pos);
-	}
-	*/
 	
 	api.setAttitudeTarget(target_att);
 }
