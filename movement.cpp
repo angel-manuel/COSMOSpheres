@@ -9,20 +9,6 @@ float movement_last_debris;
 float movement_distance;
 #endif
 
-#ifdef DEBUG_ACTIVE
-void movement_init() {
-	movement_last_debris = -1.0f;
-	movement_distance = 0.0f;
-	debug_track(5, &movement_distance, (char*)"movement_debris_distance");
-	debug_track(6, &movement_last_debris, (char*)"movement_last_debris");
-}
-#endif
-
-//movement_moveto
-//dst -> Destiny
-//direct -> If true does not uses debris avoidance
-//return -> true if we have arrived, false otherwise
-bool movement_moveto(float dst[3], bool direct) {
 	float delta[3];
 	float head[3];
 
@@ -36,12 +22,7 @@ bool movement_moveto(float dst[3], bool direct) {
 		delta[0] = delta[1] = delta[2] = 0.0f;
 		api.setAttRateTarget(delta);
 	}
-
-	//delta = head_vel
-	mathVecScalarMult(delta, head, mathVecInner(head, &our_state[VEL], 3), 3);
-	float head_speed = mathVecMagnitude(delta, 3);
-	float side_vel[3];
-	mathVecSubtract(side_vel, &our_state[VEL], delta, 3);
+fdgfgfgta, 3);
 
 	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS) + 0.03f;
 	const float correction = danger_radius + 0.02f;
