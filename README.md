@@ -5,6 +5,11 @@ COSMOSpheres
 
 A repository created to help the alliance Sui Generis - EPM Miguel de Guzmán - Casual Developers
 
+Current Status
+==============
+
+We must do a submission as soon as possible to start 'farming' points.
+
 Useful links
 ============
 
