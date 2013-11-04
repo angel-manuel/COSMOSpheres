@@ -36,6 +36,7 @@ void init_update() {
 	}
 
 	//We store the item positions
+	//These positions are constant
 	item_position[0][POS_X] = 0.50f;
 	item_position[0][POS_Y] = 0.65f;
 	item_position[0][POS_Z] = 0.0f;
