@@ -9,16 +9,10 @@ Useful links
 ============
 
 Some useful links:
-	
-	1. [Game manual] [1]
-
-	2. [API reference] [2]
-
-	3. [ZR Tutotials] [3]
-
-[1]: https://www.zerorobotics.org/documents/10429/0/CosmoSPHERES_Manual.pdf "Game manual"
-[2]: https://www.zerorobotics.org/documents/10429/374963/ZR_user_API.pdf "API reference"
-[3]: https://www.zerorobotics.org/web/zero-robotics/tutorials "Zero Robotics tutorials"
+  
+  1. Game manual: https://www.zerorobotics.org/documents/10429/0/CosmoSPHERES_Manual.pdf
+  2. API reference: https://www.zerorobotics.org/documents/10429/374963/ZR_user_API.pdf
+  3. Zero Robotics tutorials: https://www.zerorobotics.org/web/zero-robotics/tutorials
 
 GitHub
 ======
