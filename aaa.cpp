@@ -8,11 +8,12 @@
 #define MAX_NET_DIST 0.45f
 
 #define SPHERE_RADIUS 0.11f
-#define DEBRIS_RADIUS 0.03f
+#define DEBRIS_RADIUS 0.04f
 #define COMET_RADIUS 0.07f
 
-#define MIN_LASSO_DIST 0.14f
-#define MAX_LASSO_DIST 0.20f
+#define MIN_LASSO_DIST 0.15f
+#define MAX_LASSO_DIST 0.25f
+#define LASSO_TOLERANCE (PI/12.0f)
 
 #define MAX_ITEM_START_DIST 0.05f
 #define MAX_ITEM_START_VEL 0.01f
