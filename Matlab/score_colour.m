@@ -11,6 +11,7 @@ ZZ_a = f_score(d_a);
 d_b = sqrt((XX-(-0.64)).^2 + (YY-(-0.8)).^2);
 ZZ_b = f_score(d_b);
 
-ZZ = ZZ_a - ZZ_b;
+ZZ = ZZ_b - ZZ_a;
 
-mesh(XX, YY, ZZ);
+[C, h] = contourf(XX, YY, ZZ, 11);
+set(h,'ShowText','on','TextStep',get(h,'LevelStep')*2);
