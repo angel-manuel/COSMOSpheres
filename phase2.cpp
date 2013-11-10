@@ -1,4 +1,4 @@
-#define PHASE2_PREDICTION_TIME 3
+#define PHASE2_PREDICTION_TIME 2
 
 int phase2_strategy;
 //phase2_strategy
@@ -67,13 +67,15 @@ bool phase2_follow() {
 	mathVecAdd(debris_position[0], &our_state[POS], &our_state[ATT], 3);
 	distanceToDebris(&our_state[POS], debris_position[0], &our_comet_state[POS], raycast);
 
-	ret = raycast[4] < (COMET_RADIUS - 0.001f);
+	ret = raycast[4] < (COMET_RADIUS - 0.002f);
 
 	//raycast = fut_comet_state
 	float fut_comet_state[6];
 	game.predictCometState(PHASE2_PREDICTION_TIME, our_comet_state, fut_comet_state);
 	//debris_position[1] = fut_state
-	mathVecAdd(debris_position[1], &our_state[POS], &our_state[VEL], 3);
+	//debris_positoin[2] will be the velocity vector * 3;
+	mathVecScalarMult(debris_position[2], &our_state[VEL], PHASE2_PREDICTION_TIME, 3);
+	mathVecAdd(debris_position[1], &our_state[POS], debris_position[2], 3);
 
 	//debris_position[2] = target_vel
 	debris_position[2][POS_X] = 0.0f;
