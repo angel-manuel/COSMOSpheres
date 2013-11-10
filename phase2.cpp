@@ -1,4 +1,4 @@
-#define PHASE2_PREDICTION_TIME 3
+#define PHASE2_PREDICTION_TIME 2
 
 int phase2_strategy;
 //phase2_strategy
@@ -67,7 +67,7 @@ bool phase2_follow() {
 	mathVecAdd(debris_position[0], &our_state[POS], &our_state[ATT], 3);
 	distanceToDebris(&our_state[POS], debris_position[0], &our_comet_state[POS], raycast);
 
-	ret = raycast[4] < (COMET_RADIUS - 0.001f);
+	ret = raycast[4] < (COMET_RADIUS - 0.002f);
 
 	//raycast = fut_comet_state
 	float fut_comet_state[6];
