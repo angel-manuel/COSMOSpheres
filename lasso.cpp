@@ -31,7 +31,7 @@ bool lasso_pick(int debris_number) {
 				lasso_initial_rel_pos[i] = delta[i];
 			}
 			lasso_picking = true;
-			game.startLasso();
+			game.startLasso(debris_number);
 		}
 
 		float head_vel[3];
