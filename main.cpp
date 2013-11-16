@@ -85,6 +85,7 @@ void init() {
   #ifdef DEBUG_ACTIVE
   movement_init();
   #endif
+  lasso_init();
   phase1_init();
   phase2_init();
 }
