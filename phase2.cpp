@@ -1,4 +1,7 @@
 #define PHASE2_PREDICTION_TIME 2
+#define PHASE2_STRATEGY_GRAVITY 2
+#define PHASE2_STRATEGY_STAY_AND_SHOOT 1
+#define PHASE2_STRATEGY_FOLLOW_AND_SHOOT 0
 
 int phase2_strategy;
 //phase2_strategy
@@ -13,16 +16,16 @@ void phase2_init() {
 void phase2_set_strategy() {
 	switch(laser_shots_left) {
 		case 0:
-			phase2_strategy = 2;
+			phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 			break;
 		case 10:
-			phase2_strategy = 0;
+			phase2_strategy = PHASE2_STRATEGY_STAY_AND_SHOOT;
 			break;
 		case 20:
-			phase2_strategy = 1;
+			phase2_strategy = PHASE2_STRATEGY_FOLLOW_AND_SHOOT;
 			break;
 		default:
-			phase2_strategy = 2;
+			phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 	}
 }
 
