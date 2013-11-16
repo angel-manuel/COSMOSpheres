@@ -4,15 +4,32 @@ int phase2_strategy;
 //phase2_strategy
 //0 -> Stay in place and shoot(10 laser shots)
 //1 -> Follow the comet and shoot(20 laser shots)
+//2 -> Only gravity
 
 void phase2_init() {
 	phase2_strategy = -1;
 }
 
+void phase2_set_strategy() {
+	switch(laser_shots_left) {
+		case 0:
+			phase2_strategy = 2;
+			break;
+		case 10:
+			phase2_strategy = 0;
+			break;
+		case 20:
+			phase2_strategy = 1;
+			break;
+		default:
+			phase2_strategy = 2;
+	}
+}
+
 void phase2_loop() {
 	//If we dont have a strategy we decide what to do
 	if(phase2_strategy == -1) {
-		phase2_strategy = (laser_shots_left == 20) ? 1 : 0;
+		phase2_set_strategy();
 	}
 
 	#ifdef DEGUB_ACTIVE
@@ -43,7 +60,7 @@ void phase2_loop() {
 void phase2_prepare() {
 	//If we dont have a strategy we decide what to do
 	if(phase2_strategy == -1) {
-		phase2_strategy = (laser_shots_left == 20) ? 1 : 0;
+		phase2_set_strategy();
 	}
 
 	float target_pos[3] = {(blue_sphere) ? 0.5f : -0.5f, (phase2_strategy == 1) ? 0.5f : 0.4f, (blue_sphere) ? 0.4f : -0.4f};
