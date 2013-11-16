@@ -59,5 +59,23 @@ bool lasso_pick(int debris_number) {
 }
 
 int lasso_next() {
-	return 0;
+	float min_cost = -1000000.0f;
+	int best_debris = -1;
+
+	float delta[3];
+	float cost;
+
+	int debris;
+	for(debris = 0; debris < NUMBER_OF_DEBRIS; ++debris) {
+		if(!is_debris_collected[debris]) {
+			mathVecSubtract(delta, &our_state[POS], debris_position[debris], 3);
+			cost = mathVecMagnitude(delta, 3);
+			if(cost < min_cost) {
+				cost = min_cost;
+				best_debris = debris;
+			}
+		}
+	}
+
+	return best_debris;
 }
