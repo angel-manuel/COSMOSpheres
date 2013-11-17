@@ -74,22 +74,28 @@ void phase2_prepare() {
 	switch(phase2_strategy){
 		case PHASE2_STRATEGY_NONE:
 			phase2_set_strategy();
-			break;
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
 			target_pos[POS_X] = (blue_sphere) ? 0.1f : -0.1f;
 			target_pos[POS_Z] *= -1.0f;
 			target_att[POS_X] = (blue_sphere) ? -0.1f : 0.1f;
 			target_att[POS_Z] *= -1.0f;
+			api.setPositionTarget(target_pos);
+			mathVecNormalize(target_att, 3);
+			api.setAttitudeTarget(target_att);
 			break;
 		case PHASE2_STRATEGY_STAY_AND_SHOOT:
 			target_pos[POS_Y] = 0.5f;
 			target_att[POS_Y] = 0.3f;
+			api.setPositionTarget(target_pos);
+			mathVecNormalize(target_att, 3);
+			api.setAttitudeTarget(target_att);
+			break;
+		case PHASE2_STRATEGY_GRAVITY:
+			target_pos[POS_X] = target_pos[POS_Z] = 0.0f;
+			target_pos[POS_Y] = 0.7f;
+			api.setPositionTarget(target_pos);
 			break;
 	}
-	
-	mathVecNormalize(target_att, 3);
-	api.setPositionTarget(target_pos);
-	api.setAttitudeTarget(target_att);
 }
 
 bool phase2_follow() {
@@ -104,8 +110,8 @@ bool phase2_follow() {
 	//raycast = fut_comet_state
 	float fut_comet_state[6];
 	game.predictCometState(PHASE2_PREDICTION_TIME, our_comet_state, fut_comet_state);
-	//debris_position[1] = fut_state
-	//debris_positoin[2] will be the velocity vector * 3;
+	//debris_position[1] = fut_comet_state
+	//debris_position[2] will be the velocity vector * 3;
 	mathVecScalarMult(debris_position[2], &our_state[VEL], PHASE2_PREDICTION_TIME, 3);
 	mathVecAdd(debris_position[1], &our_state[POS], debris_position[2], 3);
 
@@ -120,7 +126,6 @@ bool phase2_follow() {
 	mathVecNormalize(raycast, 3);
 
 	api.setAttitudeTarget(raycast);
-	
 
 	return ret;
 }
