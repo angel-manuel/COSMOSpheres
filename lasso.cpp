@@ -1,26 +1,33 @@
 //lasso
 //Contains functions to perform lassoing
 
-bool lasso_picking;
+bool lasso_picking;	//true if we are currently lassoing
 int lasso_last_debris;
 float lasso_initial_rel_pos[3];
 
+//lasso_init
+//Gives a initial value for the vars on lasso.cpp
 void lasso_init() {
 	lasso_picking = false;
 	lasso_last_debris = -1;
 }
 
+//lasso_pick
+//Tries to lasso the item with number 'debris_number' and returns true when finished
 bool lasso_pick(int debris_number) {
 	if(is_debris_collected[debris_number]) {
+		//If the debris is collected, return true
 		lasso_picking = false;
 		return true;
 	}
 
 	if(debris_number != lasso_last_debris) {
+		//If we change the debris number we abort the lassoing
 		lasso_last_debris = debris_number;
+		lasso_picking = false;
 	}
 
-	float delta[3];
+	float delta[3];	//Holds the relative position
 	mathVecSubtract(delta, debris_position[debris_number], &our_state[POS], 3);
 	float d = mathVecNormalize(delta, 3);
 
@@ -52,12 +59,19 @@ bool lasso_pick(int debris_number) {
 		mathVecAdd(force, normal_force, head_force, 3);
 		api.setForces(force);
 	} else {
-		api.setPositionTarget(debris_position[debris_number]);
+		float target_pos[3];
+		float out[3] = {MAX_LASSO_DIST - 0.1f, 0.0f, 0.0f};
+
+		mathVecAdd(target_pos, debris_position[debris_number], out, 3);
+
+		api.setPositionTarget(target_pos);
 	}
 
 	return false;
 }
 
+//lasso_next
+//Returns the number of the nearest debris
 int lasso_next() {
 	float min_cost = -1000000.0f;
 	int best_debris = -1;
