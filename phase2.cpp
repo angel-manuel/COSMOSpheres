@@ -13,6 +13,7 @@ int phase2_strategy;
 void phase2_init() {
 	phase2_strategy = PHASE2_STRATEGY_NONE;
 }
+
 //Choose a strategy by checking the number of shots left
 void phase2_set_strategy() {
 	switch(laser_shots_left) {
