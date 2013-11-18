@@ -73,7 +73,7 @@ bool lasso_pick(int debris_number) {
 		DEBUG(("lasso: Going for item %i\n", debris_number));
 		#endif
 		float target_pos[3];
-		float out[3] = {MAX_LASSO_DIST - 0.1f, 0.0f, 0.0f};
+		float out[3] = {MAX_LASSO_DIST - 0.01f, 0.0f, 0.0f};
 
 		mathVecAdd(target_pos, debris_position[debris_number], out, 3);
 
