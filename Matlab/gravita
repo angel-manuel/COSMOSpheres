@@ -1,0 +1,32 @@
+function gravita(m1,T1,m2,T2)
+%gravita(m1, T1, m2, T2)
+%simulación del problema de los dos cuerpo
+%m1, m2: Masas de los cuerpos
+%T1, T2: Matrices de 2x2.
+%Primera fila, posición inicial. Segunda fila,velocidad inicial
+
+%Varibles
+G = 1;
+dt = 0.01;
+tf = 50;
+evo1 = [T1(1,:);zeros(tf,2)];
+evo2 = [T2(1,:);zeros(tf,2)];
+
+for i = 1:tf
+    %Actualizamos las posiciones
+    T1(1,:)=T1(1,:)+T1(2,:)*dt;
+    T2(1,:)=T2(1,:)+T2(2,:)*dt;
+    %Guardamos registros de las posiciones
+    evo1(i+1,:) = T1(1,:);
+    evo2(i+1,:) = T2(1,:);
+    %Calculamos distancia al cuadrado
+    d2 = sum((T1(1,:)-T2(1,:)).^2);
+    %Actualizamos las aceleraciones
+    a1 = G*m2/d2;
+    a2 = G*m1/d2;
+    %Actualizamos las velocidades
+    T1(2,:)=T1(2,:)+a1*dt;
+    T2(2,:)=T2(2,:)+a2*dt;
+end
+plot(evo1(:,1),evo1(:,2),'.k',evo2(1,:),evo2(2,:),'.r');
+end
