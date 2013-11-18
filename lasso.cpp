@@ -15,6 +15,10 @@ void lasso_init() {
 //lasso_pick
 //Tries to lasso the item with number 'debris_number' and returns true when finished
 bool lasso_pick(int debris_number) {
+	#ifdef DEBUG_ACTIVE
+	DEBUG(("lasso: %i\n", debris_number));
+	#endif
+
 	if(is_debris_collected[debris_number]) {
 		//If the debris is collected, return true
 		lasso_picking = false;
@@ -39,7 +43,13 @@ bool lasso_pick(int debris_number) {
 			}
 			lasso_picking = true;
 			game.startLasso(debris_number);
+			#ifdef DEBUG_ACTIVE
+			DEBUG(("lasso: Starting lassoing item %i\n", debris_number));
+			#endif
 		}
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("lasso: Lassoing item %i\n", debris_number));
+		#endif
 
 		float head_vel[3];
 		mathVecCross(head_vel, &our_state[VEL], delta);
@@ -59,6 +69,9 @@ bool lasso_pick(int debris_number) {
 		mathVecAdd(force, normal_force, head_force, 3);
 		api.setForces(force);
 	} else {
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("lasso: Going for item %i\n", debris_number));
+		#endif
 		float target_pos[3];
 		float out[3] = {MAX_LASSO_DIST - 0.1f, 0.0f, 0.0f};
 
@@ -73,7 +86,7 @@ bool lasso_pick(int debris_number) {
 //lasso_next
 //Returns the number of the nearest debris
 int lasso_next() {
-	float min_cost = -1000000.0f;
+	float min_cost = 1000000.0f;
 	int best_debris = -1;
 
 	float delta[3];
