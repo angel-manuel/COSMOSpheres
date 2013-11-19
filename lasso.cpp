@@ -97,8 +97,9 @@ int lasso_next() {
 		if(!is_debris_collected[debris]) {
 			mathVecSubtract(delta, &our_state[POS], debris_position[debris], 3);
 			cost = mathVecMagnitude(delta, 3);
+
 			if(cost < min_cost) {
-				cost = min_cost;
+				min_cost = cost;
 				best_debris = debris;
 			}
 		}
