@@ -58,7 +58,7 @@ bool lasso_pick(int debris_number) {
 		float head_speed = mathVecNormalize(head_vel, 3);
 		float side_speed = mathVecNormalize(side_vel, 3);
 
-		float normal_impulse = (head_speed*head_speed/d);
+		float normal_impulse = -(head_speed*head_speed/d);
 		float head_impulse = 0.001f;
 
 		float force[3];
@@ -68,6 +68,10 @@ bool lasso_pick(int debris_number) {
 		mathVecScalarMult(head_force, head_vel, head_impulse, 3);
 		mathVecAdd(force, normal_force, head_force, 3);
 		api.setForces(force);
+
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("force = "));debug_print_vector(force, 3);
+		#endif
 	} else {
 		#ifdef DEBUG_ACTIVE
 		DEBUG(("lasso: Going for item %i\n", debris_number));
