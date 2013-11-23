@@ -33,6 +33,20 @@ void phase2_set_strategy() {
 	#ifdef PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
 	phase2_strategy = PHASE2_STRATEGY_STAY_AND_SHOOT;
 	#endif
+
+	#ifdef DEBUG_ACTIVE
+	switch(phase2_strategy) {
+		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
+			DEBUG(("phase2: PHASE2_STRATEGY_FOLLOW_AND_SHOOT\n"));
+			break;
+		case PHASE2_STRATEGY_STAY_AND_SHOOT:
+			DEBUG(("phase2: PHASE2_STRATEGY_STAY_AND_SHOOT\n"))
+			break;
+		case PHASE2_STRATEGY_GRAVITY:
+			DEBUG(("phase2: PHASE2_STRATEGY_GRAVITY\n"));
+			break;
+	}
+	#endif
 }
 
 void phase2_loop() {
@@ -41,16 +55,19 @@ void phase2_loop() {
 		phase2_set_strategy();
 	}
 
-	#ifdef DEGUB_ACTIVE
+	#ifdef DEBUG_ACTIVE
 	DEBUG(("phase2:laser_shots_left = %i\n", laser_shots_left));
 	#endif
 
-	if(laser_shots_left == 0 && phase2_strategy != PHASE2_STRATEGY_FOLLOW_AND_SHOOT) {
+	if(phase2_strategy != PHASE2_STRATEGY_GRAVITY && laser_shots_left == 0 && phase2_strategy != PHASE2_STRATEGY_FOLLOW_AND_SHOOT) {
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("phase2: PHASE2_STRATEGY_GRAVITY\n"));
+		#endif
 		phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 	}
 
 	if(phase2_follow()) {
-		#ifdef DEGUB_ACTIVE
+		#ifdef DEBUG_ACTIVE
 		if(game.shootLaser()) {
 			DEBUG(("phase2:Bang!\n"));
 		} else {
