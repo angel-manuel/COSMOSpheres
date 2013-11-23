@@ -41,21 +41,22 @@ void phase2_loop() {
 	DEBUG(("phase2:laser_shots_left = %i\n", laser_shots_left));
 	#endif
 
-	if(laser_shots_left > 0) {
-		if(phase2_follow()) {
-			#ifdef DEGUB_ACTIVE
-			if(game.shootLaser()) {
-				DEBUG(("phase2:Bang!\n"));
-			} else {
-				DEBUG(("phase2:Missed shot\n"));
-			}
-			#else
-			game.shootLaser();
-			#endif
-		}
-	} else {
+	if(laser_shots_left == 0) {
 		phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 	}
+
+	if(phase2_follow()) {
+		#ifdef DEGUB_ACTIVE
+		if(game.shootLaser()) {
+			DEBUG(("phase2:Bang!\n"));
+		} else {
+			DEBUG(("phase2:Missed shot\n"));
+		}
+		#else
+		game.shootLaser();
+		#endif
+	}
+	
 	//If we don't have more laser shots, we use the gravity strategy (in development)
 	if(phase2_strategy = PHASE2_STRATEGY_GRAVITY){
 		our_comet_state[POS_X] += (blue_sphere) ? -0.20f: 0.20f;
