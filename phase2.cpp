@@ -3,6 +3,7 @@
 #define PHASE2_STRATEGY_STAY_AND_SHOOT 1
 #define PHASE2_STRATEGY_FOLLOW_AND_SHOOT 0
 #define PHASE2_STRATEGY_NONE -1
+#define PHASE2_TOLERANCE 0.005f
 
 int phase2_strategy;
 //phase2_strategy
@@ -29,6 +30,9 @@ void phase2_set_strategy() {
 		default:
 			phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 	}
+	#ifdef PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
+	phase2_strategy = PHASE2_STRATEGY_STAY_AND_SHOOT;
+	#endif
 }
 
 void phase2_loop() {
@@ -81,10 +85,12 @@ void phase2_prepare() {
 			api.setAttitudeTarget(target_att);
 			break;
 		case PHASE2_STRATEGY_STAY_AND_SHOOT:
-			target_pos[POS_X] = target_pos[POS_Z] = (blue_sphere) ? -0.1f: 0.1f;
+			target_pos[POS_X] = (blue_sphere) ? -0.35f: 0.35f;
 			target_pos[POS_Y] = 0.2f;
-			target_att[POS_Y] = target_att[POS_Z] = 0.0f;
+			target_pos[POS_Z] = (blue_sphere) ? 0.1f : -0.1f;
+			target_att[POS_X] = -target_pos[POS_X];
 			target_att[POS_Y] = 0.6f;
+			target_att[POS_Z] = -target_pos[POS_Z];
 			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
 			api.setAttitudeTarget(target_att);
@@ -107,7 +113,7 @@ bool phase2_follow() {
 		mathVecAdd(debris_position[0], &our_state[POS], &our_state[ATT], 3);
 		distanceToDebris(&our_state[POS], debris_position[0], &our_comet_state[POS], raycast);
 
-		ret = raycast[4] < (COMET_RADIUS - 0.002f);
+		ret = raycast[4] < (COMET_RADIUS - PHASE2_TOLERANCE);
 	} else {
 		ret = false;
 	}
@@ -133,7 +139,7 @@ bool phase2_follow() {
 			api.setAttitudeTarget(fut_att);
 			break;
 		case PHASE2_STRATEGY_STAY_AND_SHOOT:
-			target_vel[POS_X] = target_vel[POS_Z] = 0.0f;
+			target_vel[POS_X] = target_vel[POS_Y] = target_vel[POS_Z] = 0.0f;
 			api.setVelocityTarget(target_vel);
 			api.setAttitudeTarget(fut_att);
 			break;
