@@ -9,8 +9,9 @@ Current Status
 ==============
 
 We must focus on:
-	+ #21: Lassoing
-	+ #14: Avoding kamizazes
+
+* [Lassoing](https://github.com/angel-manuel/COSMOSpheres/issues/21)
+* [Kamikazes](https://github.com/angel-manuel/COSMOSpheres/issues/14)
 
 Useful links
 ============
