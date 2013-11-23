@@ -8,7 +8,10 @@ A repository created to help the alliance Sui Generis - EPM Miguel de Guzmán - 
 Current Status
 ==============
 
-We must do a submission as soon as possible to start 'farming' points.
+We must focus on:
+
+* [Lassoing](https://github.com/angel-manuel/COSMOSpheres/issues/21)
+* [Kamikazes](https://github.com/angel-manuel/COSMOSpheres/issues/14)
 
 Useful links
 ============
