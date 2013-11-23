@@ -139,7 +139,7 @@ bool phase2_follow() {
 			api.setAttitudeTarget(fut_att);
 			break;
 		case PHASE2_STRATEGY_STAY_AND_SHOOT:
-			target_vel[POS_X] = target_vel[POS_Y] = target_vel[POS_Z] = 0.0f;
+			target_vel[POS_X] = target_vel[POS_Z] = 0.0f;
 			api.setVelocityTarget(target_vel);
 			api.setAttitudeTarget(fut_att);
 			break;
