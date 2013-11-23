@@ -41,7 +41,7 @@ void phase2_loop() {
 	DEBUG(("phase2:laser_shots_left = %i\n", laser_shots_left));
 	#endif
 
-	if(laser_shots_left == 0) {
+	if(laser_shots_left == 0 && phase2_strategy != PHASE2_STRATEGY_FOLLOW_AND_SHOOT) {
 		phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 	}
 
@@ -56,44 +56,42 @@ void phase2_loop() {
 		game.shootLaser();
 		#endif
 	}
-	
-	//If we don't have more laser shots, we use the gravity strategy (in development)
-	if(phase2_strategy = PHASE2_STRATEGY_GRAVITY){
-		our_comet_state[POS_X] += (blue_sphere) ? -0.20f: 0.20f;
-		our_comet_state[POS_Y] += 0.1f;
-		api.setPositionTarget(&our_comet_state[POS]);
-	}
 }
 
 //phase2_prepare
 //Se coloca en posición para disparar al cometa por primera vez
 void phase2_prepare() {
 	//If we dont have a strategy we decide what to do
-	float target_pos[3] = {(blue_sphere) ? 0.5f : -0.5f, 0.4f, (blue_sphere) ? 0.4f : -0.4f};
-	float target_att[3] = {(blue_sphere) ? -0.5f : 0.5f, 0.4f, (blue_sphere) ? -0.4f : 0.4f};
+	float target_pos[3];
+	float target_att[3];
 	
 	//Target and attitude position in each strategy except gravity
 	switch(phase2_strategy){
 		case PHASE2_STRATEGY_NONE:
 			phase2_set_strategy();
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
-			target_pos[POS_X] = (blue_sphere) ? 0.1f : -0.1f;
-			target_pos[POS_Z] *= -1.0f;
-			target_att[POS_X] = (blue_sphere) ? -0.1f : 0.1f;
-			target_att[POS_Z] *= -1.0f;
-			api.setPositionTarget(target_pos);
+			target_pos[POS_X] = our_state[POS_X];
+			target_pos[POS_Y] = 0.4f;
+			target_pos[POS_Z] = 0.4f;
+			target_att[POS_X] = -our_state[POS_X];
+			target_att[POS_Y] = 0.4f;
+			target_att[POS_Z] = -0.4f;
+			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
 			api.setAttitudeTarget(target_att);
 			break;
 		case PHASE2_STRATEGY_STAY_AND_SHOOT:
-			target_pos[POS_Y] = 0.5f;
-			target_att[POS_Y] = 0.3f;
-			api.setPositionTarget(target_pos);
+			target_pos[POS_X] = target_pos[POS_Z] = (blue_sphere) ? -0.1f: 0.1f;
+			target_pos[POS_Y] = 0.2f;
+			target_att[POS_Y] = target_att[POS_Z] = 0.0f;
+			target_att[POS_Y] = 0.6f;
+			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
 			api.setAttitudeTarget(target_att);
 			break;
 		case PHASE2_STRATEGY_GRAVITY:
-			target_pos[POS_X] = target_pos[POS_Z] = 0.0f;
+			float dist = sqrtf((COMET_RADIUS + SPHERE_RADIUS)*(COMET_RADIUS + SPHERE_RADIUS)/2) + 0.01f;
+			target_pos[POS_X] = target_pos[POS_Z] = blue_sphere ? dist : dist;
 			target_pos[POS_Y] = 0.7f;
 			api.setPositionTarget(target_pos);
 			break;
@@ -102,32 +100,57 @@ void phase2_prepare() {
 
 bool phase2_follow() {
 	bool ret;
-	float raycast[6];
-	//debris_position[0] = head
-	mathVecAdd(debris_position[0], &our_state[POS], &our_state[ATT], 3);
-	distanceToDebris(&our_state[POS], debris_position[0], &our_comet_state[POS], raycast);
 
-	ret = raycast[4] < (COMET_RADIUS - 0.002f);
+	if(laser_shots_left > 0 && !(phase2_strategy == PHASE2_STRATEGY_GRAVITY)) {
+		float raycast[6];
+		//debris_position[0] = head
+		mathVecAdd(debris_position[0], &our_state[POS], &our_state[ATT], 3);
+		distanceToDebris(&our_state[POS], debris_position[0], &our_comet_state[POS], raycast);
 
-	//raycast = fut_comet_state
+		ret = raycast[4] < (COMET_RADIUS - 0.002f);
+	} else {
+		ret = false;
+	}
+
 	float fut_comet_state[6];
 	game.predictCometState(PHASE2_PREDICTION_TIME, our_comet_state, fut_comet_state);
-	//debris_position[1] = fut_comet_state
-	//debris_position[2] will be the velocity vector * 3;
-	mathVecScalarMult(debris_position[2], &our_state[VEL], PHASE2_PREDICTION_TIME, 3);
-	mathVecAdd(debris_position[1], &our_state[POS], debris_position[2], 3);
+	
+	float fut_sphere_pos[3];
+	float fut_sphere_delta[3];
+	mathVecScalarMult(fut_sphere_delta, &our_state[VEL], PHASE2_PREDICTION_TIME, 3);
+	mathVecAdd(fut_sphere_pos, &our_state[POS], fut_sphere_delta, 3);
 
-	//debris_position[2] = target_vel
-	debris_position[2][POS_X] = 0.0f;
-	debris_position[2][POS_Y] = our_comet_state[VEL_Y];
-	debris_position[2][POS_Z] = (phase2_strategy == 1) ? our_comet_state[VEL_Z] : 0.0f;
-	api.setVelocityTarget(debris_position[2]);
+	float fut_att[3];
+	mathVecSubtract(fut_att, &fut_comet_state[POS], fut_sphere_pos, 3);
+	mathVecNormalize(fut_att, 3);
+	
+	float target_vel[3] = {our_comet_state[VEL_X], our_comet_state[VEL_Y], our_comet_state[VEL_Z]};
 
-	//raycast = target_att
-	mathVecSubtract(raycast, &fut_comet_state[POS], debris_position[1], 3);
-	mathVecNormalize(raycast, 3);
+	switch(phase2_strategy) {
+		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
+			target_vel[POS_X] = target_vel[POS_Z] = 0.0f;
+			api.setVelocityTarget(target_vel);
+			api.setAttitudeTarget(fut_att);
+			break;
+		case PHASE2_STRATEGY_STAY_AND_SHOOT:
+			target_vel[POS_X] = target_vel[POS_Z] = 0.0f;
+			api.setVelocityTarget(target_vel);
+			api.setAttitudeTarget(fut_att);
+			break;
+		case PHASE2_STRATEGY_GRAVITY:
+			//TODO: api.setVelocityTarget
+			float target_pos[3];
+			float dist = sqrtf((COMET_RADIUS + SPHERE_RADIUS)*(COMET_RADIUS + SPHERE_RADIUS)/2) + 0.01f;
+			float rel_target_pos[3] = {
+				(blue_sphere) ? dist : -dist,
+				0.0f,
+				(blue_sphere) ? dist : -dist
+			};
 
-	api.setAttitudeTarget(raycast);
+			mathVecAdd(target_pos, &our_comet_state[POS], rel_target_pos, 3);
+			api.setPositionTarget(target_pos);
+			break;
+	}
 
 	return ret;
 }
