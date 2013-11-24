@@ -50,21 +50,22 @@ bool lasso_pick(int debris_number) {
 		DEBUG(("lasso: Lassoing item %i\n", debris_number));
 		#endif
 
-		float head_vel[3];
-		mathVecCross(head_vel, &our_state[VEL], delta);
-		float side_vel[3];
-		mathVecSubtract(side_vel, &our_state[VEL], head_vel, 3);
-		float head_speed = mathVecNormalize(head_vel, 3);
-		float side_speed = mathVecNormalize(side_vel, 3);
+		float up[3] = {0.0f, 0.0f, 1.0f};
 
-		float normal_impulse = -(head_speed*head_speed/d);
+		float head[3];
+		mathVecCross(head, up, delta);
+		float head_speed = mathVecInner(head, &our_state[VEL], 3);
+
+		float d = mathVecNormalize(delta, 3);
+
+		float normal_impulse = (head_speed*head_speed/d);
 		float head_impulse = 0.001f;
 
 		float force[3];
 		float normal_force[3];
 		float head_force[3];
-		mathVecScalarMult(normal_force, side_vel, normal_impulse, 3);
-		mathVecScalarMult(head_force, head_vel, head_impulse, 3);
+		mathVecScalarMult(normal_force, delta, normal_impulse, 3);
+		mathVecScalarMult(head_force, head, head_impulse, 3);
 		mathVecAdd(force, normal_force, head_force, 3);
 		api.setForces(force);
 
