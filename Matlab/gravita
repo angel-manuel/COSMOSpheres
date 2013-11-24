@@ -1,4 +1,5 @@
 function gravita(m1,T1,m2,T2)
+% The percentage is used fot comments (El porcentaje se usa para comentarios)
 %gravita(m1, T1, m2, T2)
 %simulación del problema de los dos cuerpo
 %m1, m2: Masas de los cuerpos
