@@ -35,14 +35,13 @@ bool lasso_pick(int debris_number) {
 	mathVecSubtract(delta, debris_position[debris_number], &our_state[POS], 3);
 	float d = mathVecNormalize(delta, 3);
 
-	if(lasso_picking || (d < MAX_LASSO_DIST && d > MIN_LASSO_DIST)) {
+	if(lasso_picking || (d < MAX_LASSO_DIST && d > MIN_LASSO_DIST && game.startLasso(debris_number))) {
 		if(!lasso_picking) {
 			int i;
 			for(i = 0; i < 3; ++i) {
 				lasso_initial_rel_pos[i] = delta[i];
 			}
 			lasso_picking = true;
-			game.startLasso(debris_number);
 			#ifdef DEBUG_ACTIVE
 			DEBUG(("lasso: Starting lassoing item %i\n", debris_number));
 			#endif
