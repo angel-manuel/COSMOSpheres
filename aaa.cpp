@@ -10,6 +10,7 @@
 #define SPHERE_RADIUS 0.11f
 #define DEBRIS_RADIUS 0.04f
 #define COMET_RADIUS 0.07f
+#define SPHERE_MASS 0.005f
 
 #define MIN_LASSO_DIST 0.15f
 #define MAX_LASSO_DIST 0.25f
