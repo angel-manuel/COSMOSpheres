@@ -58,7 +58,7 @@ bool lasso_pick(int debris_number) {
 		mathVecCross(head, up, delta);
 		float head_speed = mathVecInner(head, &our_state[VEL], 3);
 
-		float normal_impulse = (head_speed*head_speed/d);
+		float normal_impulse = (head_speed*head_speed/d)*SPHERE_INERTIAL_MASS;
 		float head_impulse = 0.001f;
 
 		float force[3];
