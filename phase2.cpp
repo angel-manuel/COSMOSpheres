@@ -3,6 +3,7 @@
 #define PHASE2_STRATEGY_STAY_AND_SHOOT 1
 #define PHASE2_STRATEGY_FOLLOW_AND_SHOOT 0
 #define PHASE2_STRATEGY_NONE -1
+#define PHASE2_TOLERANCE 0.005f
 
 int phase2_strategy;
 //phase2_strategy
@@ -29,6 +30,23 @@ void phase2_set_strategy() {
 		default:
 			phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 	}
+	#ifdef PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
+	phase2_strategy = PHASE2_STRATEGY_STAY_AND_SHOOT;
+	#endif
+
+	#ifdef DEBUG_ACTIVE
+	switch(phase2_strategy) {
+		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
+			DEBUG(("phase2: PHASE2_STRATEGY_FOLLOW_AND_SHOOT\n"));
+			break;
+		case PHASE2_STRATEGY_STAY_AND_SHOOT:
+			DEBUG(("phase2: PHASE2_STRATEGY_STAY_AND_SHOOT\n"))
+			break;
+		case PHASE2_STRATEGY_GRAVITY:
+			DEBUG(("phase2: PHASE2_STRATEGY_GRAVITY\n"));
+			break;
+	}
+	#endif
 }
 
 void phase2_loop() {
@@ -37,16 +55,19 @@ void phase2_loop() {
 		phase2_set_strategy();
 	}
 
-	#ifdef DEGUB_ACTIVE
+	#ifdef DEBUG_ACTIVE
 	DEBUG(("phase2:laser_shots_left = %i\n", laser_shots_left));
 	#endif
 
-	if(laser_shots_left == 0 && phase2_strategy != PHASE2_STRATEGY_FOLLOW_AND_SHOOT) {
+	if(phase2_strategy != PHASE2_STRATEGY_GRAVITY && laser_shots_left == 0 && phase2_strategy != PHASE2_STRATEGY_FOLLOW_AND_SHOOT) {
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("phase2: PHASE2_STRATEGY_GRAVITY\n"));
+		#endif
 		phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 	}
 
 	if(phase2_follow()) {
-		#ifdef DEGUB_ACTIVE
+		#ifdef DEBUG_ACTIVE
 		if(game.shootLaser()) {
 			DEBUG(("phase2:Bang!\n"));
 		} else {
@@ -81,10 +102,12 @@ void phase2_prepare() {
 			api.setAttitudeTarget(target_att);
 			break;
 		case PHASE2_STRATEGY_STAY_AND_SHOOT:
-			target_pos[POS_X] = target_pos[POS_Z] = (blue_sphere) ? -0.1f: 0.1f;
+			target_pos[POS_X] = (blue_sphere) ? -0.35f: 0.35f;
 			target_pos[POS_Y] = 0.2f;
-			target_att[POS_Y] = target_att[POS_Z] = 0.0f;
+			target_pos[POS_Z] = (blue_sphere) ? 0.1f : -0.1f;
+			target_att[POS_X] = -target_pos[POS_X];
 			target_att[POS_Y] = 0.6f;
+			target_att[POS_Z] = -target_pos[POS_Z];
 			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
 			api.setAttitudeTarget(target_att);
@@ -107,7 +130,7 @@ bool phase2_follow() {
 		mathVecAdd(debris_position[0], &our_state[POS], &our_state[ATT], 3);
 		distanceToDebris(&our_state[POS], debris_position[0], &our_comet_state[POS], raycast);
 
-		ret = raycast[4] < (COMET_RADIUS - 0.002f);
+		ret = raycast[4] < (COMET_RADIUS - PHASE2_TOLERANCE);
 	} else {
 		ret = false;
 	}
