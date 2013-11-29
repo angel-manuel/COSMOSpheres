@@ -98,6 +98,12 @@ void loop() {
 	debug_update();
 	#endif
 
+	#ifdef BREAK_NET
+	if(game.isNetBroken()) {
+		game.breakNet();
+	}
+	#endif
+
 	//Depending on the time we call phase1 or phase2
 	if(seconds < 90) {
 	phase1_loop();

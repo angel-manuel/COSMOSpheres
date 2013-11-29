@@ -1,5 +1,7 @@
 //phase1
 //It contains the logic for the phase 1
+#define PHASE1_MODERATION
+
 bool phase1_taking;			//true if we are spinning on the item
 int phase1_last_item;		//The last item we were trying to pick up
 int phase1_prefered_item;
@@ -9,8 +11,13 @@ float phase1_initial_att[3];
 void phase1_init() {
 	phase1_taking = false;
 	phase1_last_item = -1;
+	#ifdef PHASE1_MODERATION
+	phase1_collision = true;
+	phase1_prefered_item = (blue_sphere) ? 0 : 1;
+	#else
 	phase1_collision = false;
 	phase1_prefered_item = (blue_sphere) ? 1 : 0;
+	#endif
 }
 
 void phase1_loop() {

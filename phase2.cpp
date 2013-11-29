@@ -34,7 +34,7 @@ void phase2_set_strategy() {
 			DEBUG(("phase2: PHASE2_STRATEGY_FOLLOW_AND_SHOOT\n"));
 			break;
 		case PHASE2_STRATEGY_STAY_AND_SHOOT:
-			DEBUG(("phase2: PHASE2_STRATEGY_STAY_AND_SHOOT\n"))
+			DEBUG(("phase2: PHASE2_STRATEGY_STAY_AND_SHOOT\n"));
 			break;
 		case PHASE2_STRATEGY_GRAVITY:
 			DEBUG(("phase2: PHASE2_STRATEGY_GRAVITY\n"));

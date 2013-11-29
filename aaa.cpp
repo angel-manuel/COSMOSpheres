@@ -1,6 +1,8 @@
 //The following line actives debugging. If you comment it out you will save a lot de code usage
 #define DEBUG_ACTIVE
 
+#define SPHERE_INERTIAL_MASS 4.4f
+#define SPHERE_NORMALIZED_MASS 0.00005f
 #define SPHERE_ANGULAR_INERTIA 0.023f
 
 #define MAX_FORCE 0.1f
