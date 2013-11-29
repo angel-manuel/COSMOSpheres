@@ -3,7 +3,7 @@
 #define PHASE2_STRATEGY_STAY_AND_SHOOT 1
 #define PHASE2_STRATEGY_FOLLOW_AND_SHOOT 0
 #define PHASE2_STRATEGY_NONE -1
-#define PHASE2_TOLERANCE 0.005f
+#define PHASE2_TOLERANCE 0.015f
 
 int phase2_strategy;
 //phase2_strategy
@@ -88,11 +88,11 @@ void phase2_prepare() {
 			phase2_set_strategy();
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
 			target_pos[POS_X] = (blue_sphere) ? -0.4f : 0.4f;
-			target_pos[POS_Y] = 0.5f;
-			target_pos[POS_Z] = 0.0f;
-			target_att[POS_X] = -target_pos[POS_X];
-			target_att[POS_Y] = 0.2f;
-			target_att[POS_Z] = 0.0f;
+			target_pos[POS_Y] = 0.6f;
+			target_pos[POS_Z] = (blue_sphere) ? 0.1f : -0.1f;
+			target_att[POS_X] = (blue_sphere) ? 0.6f : -0.6f;
+			target_att[POS_Y] = 0.15f;
+			target_att[POS_Z] = -target_pos[POS_Z];
 			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
 			api.setAttitudeTarget(target_att);
@@ -136,7 +136,7 @@ bool phase2_follow() {
 	
 	float fut_sphere_pos[3];
 	float fut_sphere_delta[3];
-	mathVecScalarMult(fut_sphere_delta, &our_state[VEL], PHASE2_PREDICTION_TIME, 3);
+	mathVecScalarMult(fut_sphere_delta, &our_state[VEL], PHASE2_PREDICTION_TIME + 0.5f, 3);
 	mathVecAdd(fut_sphere_pos, &our_state[POS], fut_sphere_delta, 3);
 
 	float fut_att[3];
@@ -147,6 +147,9 @@ bool phase2_follow() {
 
 	switch(phase2_strategy) {
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
+			if(laser_shots_left == 0) {
+				target_vel[POS_X] = -2.0f*target_vel[POS_X];
+			}
 			api.setVelocityTarget(target_vel);
 			api.setAttitudeTarget(fut_att);
 			break;
