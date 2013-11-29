@@ -85,12 +85,12 @@ void phase2_prepare() {
 		case PHASE2_STRATEGY_NONE:
 			phase2_set_strategy();
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
-			target_pos[POS_X] = our_state[POS_X];
-			target_pos[POS_Y] = 0.4f;
-			target_pos[POS_Z] = 0.4f;
-			target_att[POS_X] = -our_state[POS_X];
-			target_att[POS_Y] = 0.4f;
-			target_att[POS_Z] = -0.4f;
+			target_pos[POS_X] = (blue_sphere) ? -0.5f : 0.5f;
+			target_pos[POS_Y] = 0.7f;
+			target_pos[POS_Z] = 0.0f;
+			target_att[POS_X] = (blue_sphere) ? 0.5f : -0.5f;
+			target_att[POS_Y] = 0.0f;
+			target_att[POS_Z] = -0.0f;
 			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
 			api.setAttitudeTarget(target_att);
@@ -145,12 +145,11 @@ bool phase2_follow() {
 
 	switch(phase2_strategy) {
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
-			target_vel[POS_X] = target_vel[POS_Z] = 0.0f;
 			api.setVelocityTarget(target_vel);
 			api.setAttitudeTarget(fut_att);
 			break;
 		case PHASE2_STRATEGY_STAY_AND_SHOOT:
-			target_vel[POS_X] = target_vel[POS_Z] = 0.0f;
+			target_vel[POS_X] = target_vel[POS_Y] = target_vel[POS_Z] = 0.0f;
 			api.setVelocityTarget(target_vel);
 			api.setAttitudeTarget(fut_att);
 			break;
