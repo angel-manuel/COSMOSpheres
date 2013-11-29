@@ -55,3 +55,5 @@
 
 //Force strategies
 #define PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
+
+#define BREAK_NET
