@@ -52,4 +52,4 @@
 #define ABS(val) ((val > 0) ? val : -val)
 
 //Force strategies
-#define PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
+//define PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT

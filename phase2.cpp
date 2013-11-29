@@ -21,14 +21,8 @@ void phase2_set_strategy() {
 		case 0:
 			phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 			break;
-		case 10:
-			phase2_strategy = PHASE2_STRATEGY_STAY_AND_SHOOT;
-			break;
-		case 20:
-			phase2_strategy = PHASE2_STRATEGY_FOLLOW_AND_SHOOT;
-			break;
 		default:
-			phase2_strategy = PHASE2_STRATEGY_GRAVITY;
+			phase2_strategy = PHASE2_STRATEGY_FOLLOW_AND_SHOOT;
 	}
 	#ifdef PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
 	phase2_strategy = PHASE2_STRATEGY_STAY_AND_SHOOT;
@@ -59,7 +53,7 @@ void phase2_loop() {
 	DEBUG(("phase2:laser_shots_left = %i\n", laser_shots_left));
 	#endif
 
-	if(phase2_strategy != PHASE2_STRATEGY_GRAVITY && laser_shots_left == 0 && phase2_strategy != PHASE2_STRATEGY_FOLLOW_AND_SHOOT) {
+	if(phase2_strategy != PHASE2_STRATEGY_GRAVITY && laser_shots_left == 0) {
 		#ifdef DEBUG_ACTIVE
 		DEBUG(("phase2: PHASE2_STRATEGY_GRAVITY\n"));
 		#endif
