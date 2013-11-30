@@ -1,5 +1,7 @@
 //movement
 //Deals with the movement acroos the debris_field
+#define MOVEMENT_MARGIN 0.025f
+#define MOVEMENT_CORRECTION 0.025f
 
 #define HEAD_DIST 3
 #define SIDE_DIST 4
@@ -43,8 +45,8 @@ bool movement_moveto(float dst[3], bool direct) {
 	float side_vel[3];
 	mathVecSubtract(side_vel, &our_state[VEL], delta, 3);
 
-	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS) + 0.03f;
-	const float correction = danger_radius + 0.02f;
+	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS) + MOVEMENT_MARGIN;
+	const float correction = danger_radius + MOVEMENT_CORRECTION;
 
 	if(direct || seconds >= 90) {
 		api.setPositionTarget(dst);
@@ -75,9 +77,12 @@ bool movement_moveto(float dst[3], bool direct) {
 
 	api.setPositionTarget(dst);
 	if(nearest_debris >= 0) { //Si nearest_debris es un debris válido
-		//delta = tmp
-		float needed_speed_up = correction - (nearest_debris_vector[SIDE_DIST] + ((mathVecInner(side_vel, nearest_debris_vector, 3)/head_speed)*nearest_debris_vector[3]));
-		mathVecScalarMult(delta, nearest_debris_vector, needed_speed_up, 3);
+		
+		float useful_side_vel = mathVecInner(side_vel, nearest_debris_vector, 3);
+		float useful_deviation_per_meter = useful_side_vel/head_speed;
+		float useful_deviation = useful_deviation_per_meter*nearest_debris_vector[HEAD_DIST];
+		float needed_speed_up = correction - (nearest_debris_vector[SIDE_DIST] + useful_deviation);
+		mathVecScalarMult(delta, nearest_debris_vector, SPHERE_INERTIAL_MASS*needed_speed_up*head_speed/nearest_debris_vector[HEAD_DIST], 3);
 
 		api.setForces(delta);
 	}
