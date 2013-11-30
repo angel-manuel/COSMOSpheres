@@ -105,11 +105,11 @@ void phase2_prepare() {
 			api.setAttitudeTarget(target_att);
 			break;
 		case PHASE2_STRATEGY_10_SHOTS:
-			target_pos[POS_X] = (blue_sphere) ? -0.35f: 0.35f;
+			target_pos[POS_X] = (blue_sphere) ? -0.1f: 0.1f;
 			target_pos[POS_Y] = 0.2f;
-			target_pos[POS_Z] = (blue_sphere) ? 0.1f : -0.1f;
-			target_att[POS_X] = -target_pos[POS_X];
-			target_att[POS_Y] = 0.6f;
+			target_pos[POS_Z] = (blue_sphere) ? 0.15f : -0.15f;
+			target_att[POS_X] = ((blue_sphere) ? 0.1f : -0.1f) - target_pos[POS_X];
+			target_att[POS_Y] = 0.5f;
 			target_att[POS_Z] = -target_pos[POS_Z];
 			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
