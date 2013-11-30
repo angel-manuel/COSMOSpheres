@@ -1,6 +1,7 @@
 //movement
 //Deals with the movement acroos the debris_field
 #define MOVEMENT_MARGIN 0.025f
+#define MOVEMENT_CORRECTION 0.025f
 
 #define HEAD_DIST 3
 #define SIDE_DIST 4
@@ -45,7 +46,7 @@ bool movement_moveto(float dst[3], bool direct) {
 	mathVecSubtract(side_vel, &our_state[VEL], delta, 3);
 
 	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS) + MOVEMENT_MARGIN;
-	const float correction = danger_radius + MOVEMENT_MARGIN;
+	const float correction = danger_radius + MOVEMENT_CORRECTION;
 
 	if(direct || seconds >= 90) {
 		api.setPositionTarget(dst);
