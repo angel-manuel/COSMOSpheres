@@ -77,8 +77,11 @@ bool movement_moveto(float dst[3], bool direct) {
 
 	api.setPositionTarget(dst);
 	if(nearest_debris >= 0) { //Si nearest_debris es un debris válido
-		//delta = tmp
-		float needed_speed_up = correction - (nearest_debris_vector[SIDE_DIST] + ((mathVecInner(side_vel, nearest_debris_vector, 3)/head_speed)*nearest_debris_vector[3]));
+		
+		float useful_side_vel = mathVecInner(side_vel, nearest_debris_vector, 3);
+		float useful_deviation_per_meter = useful_side_vel/head_speed;
+		float useful_deviation = useful_deviation_per_meter*nearest_debris_vector[HEAD_DIST];
+		float needed_speed_up = correction - (nearest_debris_vector[SIDE_DIST] + useful_deviation);
 		mathVecScalarMult(delta, nearest_debris_vector, needed_speed_up, 3);
 
 		api.setForces(delta);
