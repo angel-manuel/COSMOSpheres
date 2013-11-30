@@ -87,10 +87,10 @@ void phase2_prepare() {
 		case PHASE2_STRATEGY_NONE:
 			phase2_set_strategy();
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
-			target_pos[POS_X] = (blue_sphere) ? 0.5f : -0.5f;
-			target_pos[POS_Y] = 0.7f;
-			target_pos[POS_Z] = (blue_sphere) ? 0.5f : -0.5f;
-			target_att[POS_X] = (blue_sphere) ? -0.3f : 0.3f;
+			target_pos[POS_X] = (blue_sphere) ? 0.3f : -0.3f;
+			target_pos[POS_Y] = 0.6f;
+			target_pos[POS_Z] = (blue_sphere) ? 0.3f : -0.3f;
+			target_att[POS_X] = ((blue_sphere) ? 0.2f : -0.2f) - target_pos[POS_X];
 			target_att[POS_Y] = 0.05f;
 			target_att[POS_Z] = -target_pos[POS_Z];
 			movement_moveto(target_pos, false);
@@ -148,7 +148,12 @@ bool phase2_follow() {
 
 	switch(phase2_strategy) {
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
-			target_vel[POS_X] = target_vel[POS_Z] = 0.0f;
+			if(ABS(our_state[POS_X]) > 0.55f && target_vel[POS_X]*our_state[POS_X] > 0.0f) {
+				target_vel[POS_X] = 0.0f;
+			}
+			if(ABS(our_state[POS_Z]) > 0.55f && target_vel[POS_Z]*our_state[POS_Z] > 0.0f) {
+				target_vel[POS_Z] = 0.0f;
+			}
 			if(laser_shots_left == 0) {
 				target_vel[POS_X] = -2.0f*target_vel[POS_X];
 			}
