@@ -5,6 +5,8 @@ bool blue_sphere;		//It is true if we are the blue sphere and false if we are th
 
 ZRState our_state;		//Our ZRState
 
+ZRState their_state;		//Enemy ZRState
+
 bool is_debris_collected[NUMBER_OF_DEBRIS];	//is_debris_collected[i] is true if someone has taken 'i' debris
 
 float debris_position[NUMBER_OF_DEBRIS][3];	//It holds the position of the debris
@@ -50,6 +52,7 @@ void loop_update() {
 
 	//We get our state
 	api.getMyZRState(our_state);
+	api.getOtherZRState(their_state);
 
 	//We check is some articular debris is collected
 	for(i = 0; i < NUMBER_OF_DEBRIS; ++i) {
