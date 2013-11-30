@@ -53,14 +53,14 @@ void phase2_loop() {
 	DEBUG(("phase2:laser_shots_left = %i\n", laser_shots_left));
 	#endif
 
-	/*
+	
 	if(phase2_strategy != PHASE2_STRATEGY_GRAVITY && laser_shots_left == 0) {
 		#ifdef DEBUG_ACTIVE
 		DEBUG(("phase2: PHASE2_STRATEGY_GRAVITY\n"));
 		#endif
 		phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 	}
-	*/
+	
 
 	if(phase2_follow()) {
 		#ifdef DEBUG_ACTIVE
@@ -87,11 +87,11 @@ void phase2_prepare() {
 		case PHASE2_STRATEGY_NONE:
 			phase2_set_strategy();
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
-			target_pos[POS_X] = (blue_sphere) ? -0.4f : 0.4f;
-			target_pos[POS_Y] = 0.6f;
-			target_pos[POS_Z] = (blue_sphere) ? 0.1f : -0.1f;
-			target_att[POS_X] = (blue_sphere) ? 0.6f : -0.6f;
-			target_att[POS_Y] = 0.15f;
+			target_pos[POS_X] = (blue_sphere) ? 0.5f : -0.5f;
+			target_pos[POS_Y] = 0.7f;
+			target_pos[POS_Z] = (blue_sphere) ? 0.5f : -0.5f;
+			target_att[POS_X] = (blue_sphere) ? -0.3f : 0.3f;
+			target_att[POS_Y] = 0.05f;
 			target_att[POS_Z] = -target_pos[POS_Z];
 			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
@@ -110,8 +110,9 @@ void phase2_prepare() {
 			break;
 		case PHASE2_STRATEGY_GRAVITY:
 			float dist = sqrtf((COMET_RADIUS + SPHERE_RADIUS)*(COMET_RADIUS + SPHERE_RADIUS)/2) + 0.01f;
-			target_pos[POS_X] = target_pos[POS_Z] = blue_sphere ? dist : dist;
+			target_pos[POS_X] = 0.18f;
 			target_pos[POS_Y] = 0.7f;
+			target_pos[POS_Z] = 2.0f*(blue_sphere ? dist : -dist);
 			api.setPositionTarget(target_pos);
 			break;
 	}
@@ -147,6 +148,7 @@ bool phase2_follow() {
 
 	switch(phase2_strategy) {
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
+			target_vel[POS_X] = target_vel[POS_Z] = 0.0f;
 			if(laser_shots_left == 0) {
 				target_vel[POS_X] = -2.0f*target_vel[POS_X];
 			}
@@ -163,9 +165,9 @@ bool phase2_follow() {
 			float target_pos[3];
 			float dist = sqrtf((COMET_RADIUS + SPHERE_RADIUS)*(COMET_RADIUS + SPHERE_RADIUS)/2) + 0.01f;
 			float rel_target_pos[3] = {
-				(blue_sphere) ? dist : -dist,
+				(blue_sphere) ? -dist : dist,
 				0.0f,
-				(blue_sphere) ? dist : -dist
+				(blue_sphere) ? -dist : dist
 			};
 
 			mathVecAdd(target_pos, &our_comet_state[POS], rel_target_pos, 3);
