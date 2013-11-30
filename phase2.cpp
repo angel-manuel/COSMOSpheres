@@ -87,11 +87,11 @@ void phase2_prepare() {
 		case PHASE2_STRATEGY_NONE:
 			phase2_set_strategy();
 		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
-			target_pos[POS_X] = (blue_sphere) ? 0.3f : -0.3f;
+			target_pos[POS_X] = (blue_sphere) ? 0.4f : -0.4f;
 			target_pos[POS_Y] = 0.6f;
-			target_pos[POS_Z] = (blue_sphere) ? 0.3f : -0.3f;
-			target_att[POS_X] = ((blue_sphere) ? 0.2f : -0.2f) - target_pos[POS_X];
-			target_att[POS_Y] = 0.05f;
+			target_pos[POS_Z] = (blue_sphere) ? 0.4f : -0.4f;
+			target_att[POS_X] = ((blue_sphere) ? 0.1f : -0.1f) - target_pos[POS_X];
+			target_att[POS_Y] = 0.1f;
 			target_att[POS_Z] = -target_pos[POS_Z];
 			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
@@ -168,11 +168,10 @@ bool phase2_follow() {
 		case PHASE2_STRATEGY_GRAVITY:
 			//TODO: api.setVelocityTarget
 			float target_pos[3];
-			float dist = sqrtf((COMET_RADIUS + SPHERE_RADIUS)*(COMET_RADIUS + SPHERE_RADIUS)/2) + 0.01f;
 			float rel_target_pos[3] = {
-				(blue_sphere) ? -dist : dist,
 				0.0f,
-				(blue_sphere) ? -dist : dist
+				0.08f,
+				0.0f
 			};
 
 			mathVecAdd(target_pos, &our_comet_state[POS], rel_target_pos, 3);
