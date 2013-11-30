@@ -21,8 +21,18 @@ void phase2_set_strategy() {
 		case 0:
 			phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 			break;
-		default:
+		case 10:
+			phase2_strategy = PHASE2_STRATEGY_10_SHOTS;
+			break;
+		case 20:
 			phase2_strategy = PHASE2_STRATEGY_20_SHOTS;
+			break;
+		default:
+			if(laser_shots_left > 0) {
+				phase2_strategy = PHASE2_STRATEGY_10_SHOTS;
+			} else {
+				phase2_strategy = PHASE2_STRATEGY_GRAVITY;
+			}
 	}
 
 	#ifdef DEBUG_ACTIVE
