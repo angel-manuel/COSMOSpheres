@@ -1,7 +1,7 @@
 #define PHASE2_PREDICTION_TIME 2
 #define PHASE2_STRATEGY_GRAVITY 2
-#define PHASE2_STRATEGY_STAY_AND_SHOOT 1
-#define PHASE2_STRATEGY_FOLLOW_AND_SHOOT 0
+#define PHASE2_STRATEGY_10_SHOTS 1
+#define PHASE2_STRATEGY_20_SHOTS 0
 #define PHASE2_STRATEGY_NONE -1
 #define PHASE2_TOLERANCE 0.015f
 
@@ -22,19 +22,16 @@ void phase2_set_strategy() {
 			phase2_strategy = PHASE2_STRATEGY_GRAVITY;
 			break;
 		default:
-			phase2_strategy = PHASE2_STRATEGY_FOLLOW_AND_SHOOT;
+			phase2_strategy = PHASE2_STRATEGY_20_SHOTS;
 	}
-	#ifdef PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
-	phase2_strategy = PHASE2_STRATEGY_STAY_AND_SHOOT;
-	#endif
 
 	#ifdef DEBUG_ACTIVE
 	switch(phase2_strategy) {
-		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
-			DEBUG(("phase2: PHASE2_STRATEGY_FOLLOW_AND_SHOOT\n"));
+		case PHASE2_STRATEGY_20_SHOTS:
+			DEBUG(("phase2: PHASE2_STRATEGY_20_SHOTS\n"));
 			break;
-		case PHASE2_STRATEGY_STAY_AND_SHOOT:
-			DEBUG(("phase2: PHASE2_STRATEGY_STAY_AND_SHOOT\n"));
+		case PHASE2_STRATEGY_10_SHOTS:
+			DEBUG(("phase2: PHASE2_STRATEGY_10_SHOTS\n"));
 			break;
 		case PHASE2_STRATEGY_GRAVITY:
 			DEBUG(("phase2: PHASE2_STRATEGY_GRAVITY\n"));
@@ -86,7 +83,7 @@ void phase2_prepare() {
 	switch(phase2_strategy){
 		case PHASE2_STRATEGY_NONE:
 			phase2_set_strategy();
-		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
+		case PHASE2_STRATEGY_20_SHOTS:
 			target_pos[POS_X] = (blue_sphere) ? 0.4f : -0.4f;
 			target_pos[POS_Y] = 0.6f;
 			target_pos[POS_Z] = (blue_sphere) ? 0.4f : -0.4f;
@@ -97,7 +94,7 @@ void phase2_prepare() {
 			mathVecNormalize(target_att, 3);
 			api.setAttitudeTarget(target_att);
 			break;
-		case PHASE2_STRATEGY_STAY_AND_SHOOT:
+		case PHASE2_STRATEGY_10_SHOTS:
 			target_pos[POS_X] = (blue_sphere) ? -0.35f: 0.35f;
 			target_pos[POS_Y] = 0.2f;
 			target_pos[POS_Z] = (blue_sphere) ? 0.1f : -0.1f;
@@ -147,7 +144,7 @@ bool phase2_follow() {
 	float target_vel[3] = {our_comet_state[VEL_X], our_comet_state[VEL_Y], our_comet_state[VEL_Z]};
 
 	switch(phase2_strategy) {
-		case PHASE2_STRATEGY_FOLLOW_AND_SHOOT:
+		case PHASE2_STRATEGY_20_SHOTS:
 			if(ABS(our_state[POS_X]) > 0.55f && target_vel[POS_X]*our_state[POS_X] > 0.0f) {
 				target_vel[POS_X] = 0.0f;
 			}
@@ -160,7 +157,7 @@ bool phase2_follow() {
 			api.setVelocityTarget(target_vel);
 			api.setAttitudeTarget(fut_att);
 			break;
-		case PHASE2_STRATEGY_STAY_AND_SHOOT:
+		case PHASE2_STRATEGY_10_SHOTS:
 			target_vel[POS_X] = target_vel[POS_Y] = target_vel[POS_Z] = 0.0f;
 			api.setVelocityTarget(target_vel);
 			api.setAttitudeTarget(fut_att);

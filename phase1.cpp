@@ -23,9 +23,6 @@ void phase1_init() {
 void phase1_loop() {
 	if(!phase1_collision) {	//If we haven't collided yet
 		phase1_collision = game.wasCollisionActive(); //We check if we have collided
-		#ifdef PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
-		phase1_collision = true;
-		#endif
 		if(phase1_collision) {
 			//If we have collided we change our target item
 			phase1_prefered_item = (phase1_prefered_item == 1) ? 0 : 1;

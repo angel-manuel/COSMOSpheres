@@ -52,6 +52,3 @@
 #define MAX(a, b) ((a > b) ? a : b)
 
 #define ABS(val) ((val > 0) ? val : -val)
-
-//Force strategies
-//define PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
