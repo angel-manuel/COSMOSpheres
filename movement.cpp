@@ -82,7 +82,7 @@ bool movement_moveto(float dst[3], bool direct) {
 		float useful_deviation_per_meter = useful_side_vel/head_speed;
 		float useful_deviation = useful_deviation_per_meter*nearest_debris_vector[HEAD_DIST];
 		float needed_speed_up = correction - (nearest_debris_vector[SIDE_DIST] + useful_deviation);
-		mathVecScalarMult(delta, nearest_debris_vector, needed_speed_up, 3);
+		mathVecScalarMult(delta, nearest_debris_vector, SPHERE_INERTIAL_MASS*needed_speed_up*head_speed/nearest_debris_vector[HEAD_DIST], 3);
 
 		api.setForces(delta);
 	}
