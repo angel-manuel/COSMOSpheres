@@ -20,22 +20,25 @@ void phase1_init() {
 	#endif
 }
 
-void phase1_loop() {
-	if(!phase1_collision) {	//If we haven't collided yet
-		phase1_collision = game.wasCollisionActive(); //We check if we have collided
-		if(phase1_collision) {
-			//If we have collided we change our target item
-			phase1_prefered_item = (phase1_prefered_item == 1) ? 0 : 1;
+void phase1_loop() 
+{
+	if(!(netBroken))
+		bullyingWithTheNet();
+	
+	else
+	{
+		if(!(bullyingWithTheItem()))
+		{
+			if (seconds < 80 || phase1_taking)
+			{	 //If there is plenty of time or if we are currently spinning we take the items
+				if(phase1_take(phase1_prefered_item, false) && (phase1_collision || phase1_take((phase1_prefered_item == 1) ? 0 : 1, true))) 
+				{
+					phase2_prepare();
+				}
+			}
+			else
+				phase2_prepare();
 		}
-	}
-
-	if(seconds < 80 || phase1_taking) {
-		//If there is plenty of time or if we are currently spinning we take the items
-		if(phase1_take(phase1_prefered_item, false) && (phase1_collision || phase1_take((phase1_prefered_item == 1) ? 0 : 1, true))) {
-			phase2_prepare();
-		}
-	} else {
-		phase2_prepare();
 	}
 }
 

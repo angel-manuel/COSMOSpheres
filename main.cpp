@@ -16,6 +16,11 @@ float item_position[NUMBER_OF_ITEMS][3];	//It holds the position of the items
 float our_comet_state[6];			//State of our comet
 
 int laser_shots_left;			//Number of laser shots left
+
+//We will need this variables...
+ZRState their_state;
+
+bool netBroken;
 //update()
 
 //init_update()
@@ -50,6 +55,9 @@ void loop_update() {
 
 	//We get our state
 	api.getMyZRState(our_state);
+	api.getOtherZRState(their_state);
+	
+	netBroken = game.isNetBroken();
 
 	//We check is some articular debris is collected
 	for(i = 0; i < NUMBER_OF_DEBRIS; ++i) {
