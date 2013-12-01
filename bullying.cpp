@@ -1,10 +1,7 @@
 //Playing according to the rules is nice and all, but winning is better. And if they didn't want
 //us to do it they could make the other strategies viable. Bullying is OP guys. 
 
-//We will need this variables...
-bool netBroken;
-
-//... and this functions.
+//We will need this functions.
 //Activate this if the net is not broken. We will mimic the other sphere and if he tries to get debris we will break the net.
 void bullyingWithTheNet()
 {
@@ -138,6 +135,31 @@ bool getThemOutOfBounds()
 	}
 
 	return false;
+}
+
+//Look for the nearest debris
+int nearestDebris()
+{
+	int nearest_debris = -1;
+	float distance = 999999;
+	float temp_dist [3];
+
+	//Look for the closest debris to back to.
+	for(int i = 0; i < NUMBER_OF_DEBRIS; i++)
+	{
+		//If it's still there
+		if(!is_debris_collected[i])
+		{
+			//Check if it's the nearest one.
+			mathVecSubtract(temp_dist, &our_state[0], debris_position[i], 3);
+			if(mathVecMagnitude(temp_dist, 3)<distance)
+			{
+				nearest_debris = i;
+				distance = mathVecMagnitude(temp_dist, 3);
+			}
+		}
+	}
+	return nearest_debris;
 }
 
 //Checks if a vector is out of bounds.
