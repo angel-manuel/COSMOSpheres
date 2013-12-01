@@ -3,50 +3,10 @@
 #define PHASE2_VEL_PREP_TIME 88
 
 void phase2_init() {
-	phase2_strategy = PHASE2_STRATEGY_NONE;
 }
 
-//Choose a strategy by checking the number of shots left
-void phase2_set_strategy() {
-	switch(laser_shots_left) {
-		case 0:
-			phase2_strategy = PHASE2_STRATEGY_GRAVITY;
-			break;
-		case 10:
-			phase2_strategy = PHASE2_STRATEGY_10_SHOTS;
-			break;
-		case 20:
-			phase2_strategy = PHASE2_STRATEGY_20_SHOTS;
-			break;
-		default:
-			if(laser_shots_left > 0) {
-				phase2_strategy = PHASE2_STRATEGY_10_SHOTS;
-			} else {
-				phase2_strategy = PHASE2_STRATEGY_GRAVITY;
-			}
-	}
-
-	#ifdef DEBUG_ACTIVE
-	switch(phase2_strategy) {
-		case PHASE2_STRATEGY_20_SHOTS:
-			DEBUG(("phase2: PHASE2_STRATEGY_20_SHOTS\n"));
-			break;
-		case PHASE2_STRATEGY_10_SHOTS:
-			DEBUG(("phase2: PHASE2_STRATEGY_10_SHOTS\n"));
-			break;
-		case PHASE2_STRATEGY_GRAVITY:
-			DEBUG(("phase2: PHASE2_STRATEGY_GRAVITY\n"));
-			break;
-	}
-	#endif
-}
 
 void phase2_loop() {
-	//If we dont have a strategy we decide what to do
-	if(phase2_strategy == PHASE2_STRATEGY_NONE) {
-		phase2_set_strategy();
-	}
-
 	#ifdef DEBUG_ACTIVE
 	DEBUG(("phase2:laser_shots_left = %i\n", laser_shots_left));
 	#endif
