@@ -33,7 +33,7 @@ void phase2_prepare() {
 		blue_sphere ? 0.25f : -0.25f
 	};
 	float target_att[3] = {
-		blue_sphere ? 0.5f : -0.5f,
+		blue_sphere ? 0.6f : -0.6f,
 		0.3f,
 		blue_sphere ? -0.3f : 0.3f
 	};
@@ -54,10 +54,10 @@ void phase2_prepare() {
 	}
 }
 
-bool phase2_follow() {
+bool phase2_aim() {
 	bool ret;
 
-	if(laser_shots_left > 0 && !(phase2_strategy == PHASE2_STRATEGY_GRAVITY)) {
+	if(laser_shots_left > 0) {
 		float raycast[6];
 		//debris_position[0] = head
 		mathVecAdd(debris_position[0], &our_state[POS], &our_state[ATT], 3);
