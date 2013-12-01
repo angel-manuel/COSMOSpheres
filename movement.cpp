@@ -1,7 +1,7 @@
 //movement
 //Deals with the movement acroos the debris_field
-#define MOVEMENT_MARGIN 0.025f
-#define MOVEMENT_CORRECTION 0.025f
+#define MOVEMENT_MARGIN 0.02f
+#define MOVEMENT_CORRECTION 0.035f
 
 #define HEAD_DIST 3
 #define SIDE_DIST 4
