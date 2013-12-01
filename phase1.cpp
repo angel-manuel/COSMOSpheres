@@ -33,7 +33,7 @@ void phase1_loop() {
 	}
 
 	//If there is plenty of time or if we are currently spinning...
-	if((seconds < 80 || phase1_taking) 
+	if(seconds < 80 || phase1_taking) 
 	{
 		//... and we are not under attack, we take the items
 		if(!(Kamikaze[0] || Kamikaze[1] || Kamikaze[2]))
@@ -47,9 +47,10 @@ void phase1_loop() {
 		} 
 		
 		//Else we prepare for combat
-		else
+		else {
 			Kamikaze_Trolling();
-		
+		}
+	}
 	//Or we run to get ready for the comet
 	else 
 	{
