@@ -1,11 +1,7 @@
 //Playing according to the rules is nice and all, but winning is better. And if they didn't want
 //us to do it they could make the other strategies viable. Bullying is OP guys. 
 
-//We will need this variables...
-ZRState their_state;
-bool netBroken;
-
-//... and this functions.
+//We will need this functions.
 //Activate this if the net is not broken. We will mimic the other sphere and if he tries to get debris we will break the net.
 void bullyingWithTheNet()
 {
@@ -22,7 +18,7 @@ void bullyingWithTheNet()
 		return;
 
 	//Set velocity target to mimic them without breaking the net
-	game.setVelocityTarget(&their_state[3]);
+	api.setVelocityTarget(&their_state[3]);
 
 	//If we are about to crash break the net and avoid the debris. Simmetry of the debris field should make them crash if they aren't fast enough.
 		//Sum position and velocity. 
@@ -67,11 +63,11 @@ bool bullyingWithTheItem()
 	}
 
 	//If not, return to main (or if we need to back to our item)
-	if(enemy_item == -1 || seconds >= 75)
+	if(enemyItem == -1 || seconds >= 75)
 		return false;
 
 	//If they are, there we go!
-	movement_moveto(item_position[i], false);
+	movement_moveto(item_position[enemyItem], false);
 	return true;
 }
 
@@ -175,8 +171,8 @@ bool outOfBounds(float objective[3])
    for(int i = 0; i<3; i++)
    {
    	//ZBOUND is not defined. I don't know it's value and the ZR IDE is down
-   	gameField[2*i]  = (i==0 ? 0.64 : ((i==1) ? 0.80 : (ZBOUND)))
-   	gameField[2*i+1]= (i==0 ? -0.64 : ((i==1) ? -0.80 : -(ZBOUND)))
+   	gameField[2*i]  = (i==0 ? 0.64 : ((i==1) ? 0.80 : (0.64)));
+   	gameField[2*i+1]= (i==0 ? -0.64 : ((i==1) ? -0.80 : -(0.64)));
 
    	//Check if objective (x, y , z) is outside the game field
    	if((objective[i] > gameField[2*i]) || (objective[i] < gameField[2*i+1]))
