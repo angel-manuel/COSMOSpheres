@@ -23,18 +23,36 @@ void phase1_init() {
 void phase1_loop() {
 	if(!phase1_collision) {	//If we haven't collided yet
 		phase1_collision = game.wasCollisionActive(); //We check if we have collided
+		#ifdef PHASE2_FORCE_STRATEGY_STAY_AND_SHOOT
+		phase1_collision = true;
+		#endif
 		if(phase1_collision) {
 			//If we have collided we change our target item
 			phase1_prefered_item = (phase1_prefered_item == 1) ? 0 : 1;
 		}
 	}
 
-	if(seconds < 80 || phase1_taking) {
-		//If there is plenty of time or if we are currently spinning we take the items
-		if(phase1_take(phase1_prefered_item, false) && (phase1_collision || phase1_take((phase1_prefered_item == 1) ? 0 : 1, true))) {
-			phase2_prepare();
-		}
-	} else {
+	//If there is plenty of time or if we are currently spinning...
+	if((seconds < 80 || phase1_taking) 
+	{
+		//... and we are not under attack, we take the items
+		if(!(Kamikaze[0] || Kamikaze[1] || Kamikaze[2]))
+		{
+				//If there is plenty of time or if we are currently spinning we take the items
+				if(phase1_take(phase1_prefered_item, false) && (phase1_collision || phase1_take((phase1_prefered_item == 1) ? 0 : 1, true))) 
+				{
+					phase2_prepare();
+				}
+
+		} 
+		
+		//Else we prepare for combat
+		else
+			Kamikaze_Trolling();
+		
+	//Or we run to get ready for the comet
+	else 
+	{
 		phase2_prepare();
 	}
 }
