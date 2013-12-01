@@ -1,7 +1,7 @@
 //movement
 //Deals with the movement acroos the debris_field
-#define MOVEMENT_MARGIN 0.015f
-#define MOVEMENT_CORRECTION 0.0f
+#define MOVEMENT_MARGIN 0.03f
+#define MOVEMENT_CORRECTION 0.06f
 
 #define HEAD_DIST 3
 #define SIDE_DIST 4
@@ -39,11 +39,11 @@ bool movement_moveto(float dst[3], bool direct) {
 		api.setAttRateTarget(delta);
 	}
 
-	//delta = head_vel
-	mathVecScalarMult(delta, head, mathVecInner(head, &our_state[VEL], 3), 3);
-	float head_speed = mathVecMagnitude(delta, 3);
+	float head_vel[3];
+	mathVecScalarMult(head_vel, head, mathVecInner(head, &our_state[VEL], 3), 3);
+	float head_speed = mathVecMagnitude(head_vel, 3);
 	float side_vel[3];
-	mathVecSubtract(side_vel, &our_state[VEL], delta, 3);
+	mathVecSubtract(side_vel, &our_state[VEL], head_vel, 3);
 
 	const float danger_radius = (SPHERE_RADIUS + DEBRIS_RADIUS) + MOVEMENT_MARGIN;
 	const float correction = danger_radius + MOVEMENT_CORRECTION;
@@ -76,13 +76,34 @@ bool movement_moveto(float dst[3], bool direct) {
 	}
 
 	api.setPositionTarget(dst);
+
 	if(nearest_debris >= 0) { //Si nearest_debris es un debris válido
 		
 		float useful_side_vel = mathVecInner(side_vel, nearest_debris_vector, 3);
 		float useful_deviation_per_meter = useful_side_vel/head_speed;
 		float useful_deviation = useful_deviation_per_meter*nearest_debris_vector[HEAD_DIST];
-		float needed_speed_up = correction - (nearest_debris_vector[SIDE_DIST] + useful_deviation);
-		mathVecScalarMult(delta, nearest_debris_vector, SPHERE_INERTIAL_MASS*needed_speed_up*head_speed/nearest_debris_vector[HEAD_DIST], 3);
+		float time_to_impact = (nearest_debris_vector[HEAD_DIST]/head_speed);
+		float needed_correction = (correction - (nearest_debris_vector[SIDE_DIST] + useful_deviation));
+
+		/*
+		mathVecScalarMult(delta, nearest_debris_vector, needed_correction, 3);
+
+		float target_pos[3];
+		mathVecAdd(target_pos, delta, debris_position[nearest_debris], 3);
+		api.setPositionTarget(delta);
+
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("movement: Going to "));debug_print_vector(target_pos, 3);
+		#endif
+		*/
+		
+		
+		float needed_speed_up = needed_correction/time_to_impact;
+		mathVecScalarMult(delta, nearest_debris_vector, SPHERE_INERTIAL_MASS*needed_speed_up, 3);
+
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("needed_speed_up = %f\n", needed_speed_up));
+		#endif
 
 		api.setForces(delta);
 	}
