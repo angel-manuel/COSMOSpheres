@@ -105,11 +105,11 @@ void phase2_prepare() {
 			api.setAttitudeTarget(target_att);
 			break;
 		case PHASE2_STRATEGY_10_SHOTS:
-			target_pos[POS_X] = (blue_sphere) ? -0.2f: 0.2f;
-			target_pos[POS_Y] = 0.7f;
-			target_pos[POS_Z] = (blue_sphere) ? 0.15f: -0.15f;
-			target_att[POS_X] = (blue_sphere) ? 0.6f: -0.6f;
-			target_att[POS_Y] = 0.05f;
+			target_pos[POS_X] = (blue_sphere) ? 0.2f: -0.2f;
+			target_pos[POS_Y] = 0.55f;
+			target_pos[POS_Z] = (blue_sphere) ? -0.3f: 0.3f;
+			target_att[POS_X] = 0.0f;
+			target_att[POS_Y] = 0.1f;
 			target_att[POS_Z] = -target_pos[POS_Z];
 			movement_moveto(target_pos, false);
 			mathVecNormalize(target_att, 3);
@@ -171,7 +171,7 @@ bool phase2_follow() {
 			target_vel[POS_Z] =  0.0f;
 			target_vel[POS_Y] *= 2.0f;
 
-			if(ABS(our_state[POS_X] - our_comet_state[POS_X]) < 0.2f) {
+			if(ABS(our_state[POS_X] - our_comet_state[POS_X]) < 0.1f) {
 				target_vel[POS_X] *= -1.0f;
 			} else {
 				target_vel[POS_X] = 0.0f;
