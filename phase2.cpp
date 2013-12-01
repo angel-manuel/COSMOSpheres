@@ -28,13 +28,13 @@ void phase2_loop() {
 void phase2_prepare() {
 	float target_pos[3] = {
 		blue_sphere ? -0.2f : 0.2f,
-		0.6f,
-		0.0f
+		0.5f,
+		blue_sphere ? 0.25f : -0.25f
 	};
 	float target_att[3] = {
-		blue_sphere ? 0.4f : -0.4f,
-		0.0f,
-		0.0f
+		blue_sphere ? 0.5f : -0.5f,
+		0.3f,
+		blue_sphere ? -0.3f : 0.3f
 	};
 	float target_vel[3] = {
 		0.0f,
@@ -83,7 +83,17 @@ bool phase2_aim() {
 	
 	float target_vel[3] = {our_comet_state[VEL_X], our_comet_state[VEL_Y], our_comet_state[VEL_Z]};
 
-	api.setVelocityTarget(target_vel);
+	if(our_comet_state[POS_Y] < (our_state[POS_Y] + 0.1f)) {
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("phase2: Catching the comet(%f < %f)\n", our_comet_state[POS_Y], our_state[POS_Y] + 0.1f));
+		#endif
+		api.setVelocityTarget(target_vel);
+	} else {
+		#ifdef DEBUG_ACTIVE
+		DEBUG(("phase2: Staying(%f > %f)\n", our_comet_state[POS_Y], our_state[POS_Y] + 0.1f));
+		#endif
+	}
+
 	api.setAttitudeTarget(fut_att);
 
 	return ret;
