@@ -17,10 +17,10 @@
 #define MAX_LASSO_DIST 0.25f
 #define LASSO_TOLERANCE (PI/12.0f)
 
-#define MAX_ITEM_START_DIST 0.05f
-#define MAX_ITEM_START_VEL 0.01f
-#define MAX_ITEM_START_RATE 0.0401f
-#define MAX_ITEM_RATE 1.3962f
+#define MAX_ITEM_START_DIST 0.04f
+#define MAX_ITEM_START_VEL 0.008f
+#define MAX_ITEM_START_RATE 0.035f
+#define MAX_ITEM_RATE 1.3f
 
 //Indexes of the values contained in ZRState
 #define POS 0
