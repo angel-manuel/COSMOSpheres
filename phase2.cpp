@@ -171,7 +171,7 @@ bool phase2_follow() {
 			target_vel[POS_Z] =  0.0f;
 			target_vel[POS_Y] *= 2.0f;
 
-			if(ABS(our_state[POS_X] - our_comet_state[POS_X]) < 0.2f) {
+			if(ABS(our_state[POS_X] - our_comet_state[POS_X]) < 0.1f) {
 				target_vel[POS_X] *= -1.0f;
 			} else {
 				target_vel[POS_X] = 0.0f;
